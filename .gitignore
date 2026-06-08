@@ -2,7 +2,7 @@
 node_modules/
 
 # Build output
-# dist/ (Décommenter si vous voulez versionner le build, mais recommandé via GitHub Actions)
+dist/
 
 # Logs
 npm-debug.log*
