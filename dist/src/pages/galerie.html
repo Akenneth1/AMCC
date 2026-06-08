@@ -1,0 +1,22 @@
+<section class="galerie-hero">
+  <div class="container">
+    <p class="section-label" style="justify-content:center;">Notre univers visuel</p>
+    <h1 class="section-title"><em>Galerie</em></h1>
+    <div class="divider" style="margin:24px auto;"></div>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="container">
+    <div class="galerie-cats" role="tablist" aria-label="Filtrer la galerie" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:40px;">
+      <button class="galerie-cat-btn active" onclick="filterGalerie('tous', this)">Tous</button>
+      <button class="galerie-cat-btn" onclick="filterGalerie('defiles', this)">Défilés</button>
+      <button class="galerie-cat-btn" onclick="filterGalerie('concerts', this)">Concerts</button>
+      <button class="galerie-cat-btn" onclick="filterGalerie('expositions', this)">Expositions</button>
+      <button class="galerie-cat-btn" onclick="filterGalerie('backstages', this)">Backstage</button>
+      <button class="galerie-cat-btn" onclick="filterGalerie('public', this)">Public</button>
+    </div>
+
+    <div class="galerie-full-grid" id="galerieGrid"></div>
+  </div>
+</section>

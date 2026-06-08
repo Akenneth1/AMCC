@@ -1,0 +1,128 @@
+/* ── LIQUID BG SAFETY ── */
+.liquid-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1; /* Toujours derrière */
+  pointer-events: none; /* Ne bloque jamais les clics */
+  overflow: hidden;
+}
+
+/* ── SPA PAGE DISPLAY ── */
+.page { display: none; opacity: 0; }
+.page.active { display: block; opacity: 1; }
+
+/* ── VARIABLES ── */
+:root {
+  --gold: #C8A96B;
+  --gold-light: #D8B25A;
+  --gold-pale: #e8cfa0;
+  --gold-deep: #a8833a;
+  --black: #111111;
+  --black-soft: #1a1a1a;
+  --off-white: #F7F4EF;
+  --beige: #E8DDD0;
+  --grey: #F3F3F3;
+  --text-muted: #888;
+  --muted: #888;
+
+  /* Liquid Glass vars */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(200, 169, 107, 0.2);
+  --glass-bdr: rgba(200, 169, 107, 0.2);
+  --glass-blur: blur(24px);
+  --glass-shine: rgba(255, 255, 255, 0.06);
+  --glass-refraction: rgba(200, 169, 107, 0.05);
+
+  /* 3D Logo */
+  --logo-depth: 8px;
+  --logo-shine: rgba(255, 255, 255, 0.15);
+  --logo-shadow: rgba(0, 0, 0, 0.6);
+
+  /* Section backgrounds (dark defaults) */
+  --section-bg: #111111;
+  --section-bg-soft: #1a1a1a;
+  --card-bg: rgba(255,255,255,0.03);
+  --border-color: rgba(200,169,107,0.18);
+  --text-primary: #F7F4EF;
+  --text-secondary: #E8DDD0;
+  --nav-scrolled-bg: rgba(17,17,17,0.85);
+  --input-bg: rgba(255,255,255,0.04);
+  --input-border: rgba(200,169,107,0.2);
+}
+
+/* ── LIGHT THEME ── */
+body.light-theme {
+  --black: #faf8f5;
+  --black-soft: #f2ede6;
+  --off-white: #1a1410;
+  --beige: #3a2e22;
+  --text-muted: #7a6a56;
+  --muted: #7a6a56;
+  --glass-bg: rgba(0,0,0,0.03);
+  --glass-border: rgba(168,131,58,0.25);
+  --glass-bdr: rgba(168,131,58,0.25);
+  --glass-shine: rgba(0,0,0,0.04);
+  --glass-refraction: rgba(168,131,58,0.06);
+  --section-bg: #faf8f5;
+  --section-bg-soft: #f2ede6;
+  --card-bg: rgba(0,0,0,0.03);
+  --border-color: rgba(168,131,58,0.2);
+  --nav-scrolled-bg: rgba(250,248,245,0.92);
+  --input-bg: rgba(0,0,0,0.04);
+  --input-border: rgba(168,131,58,0.3);
+}
+
+body.light-theme {
+  background: var(--black);
+  color: var(--off-white);
+}
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--black);
+  color: var(--off-white);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ── THEME TOGGLE BUTTON ── */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(200,169,107,0.35);
+  background: rgba(200,169,107,0.08);
+  cursor: pointer;
+  transition: background .3s, border-color .3s, transform .3s;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.theme-toggle:hover {
+  background: rgba(200,169,107,0.18);
+  border-color: var(--gold);
+  transform: scale(1.08);
+}
+.theme-toggle svg {
+  width: 16px; height: 16px;
+  transition: opacity .25s, transform .35s;
+  position: absolute;
+}
+.theme-toggle .icon-moon { opacity: 1; transform: rotate(0deg) scale(1); }
+.theme-toggle .icon-sun  { opacity: 0; transform: rotate(90deg) scale(0.6); }
+body.light-theme .theme-toggle .icon-moon { opacity: 0; transform: rotate(-90deg) scale(0.6); }
+body.light-theme .theme-toggle .icon-sun  { opacity: 1; transform: rotate(0deg) scale(1); }
+body.light-theme .theme-toggle { border-color: rgba(168,131,58,0.4); background: rgba(168,131,58,0.1); }
+
+/* Typography improvements from light-theme */
+body.light-theme .hero-title { color: #1a1410; }
+body.light-theme .hero-subtitle { color: #5a4a36; }
+body.light-theme .section-title { color: #1a1410; }
+body.light-theme .section-title em { color: var(--gold-deep); }

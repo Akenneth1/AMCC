@@ -1,0 +1,84 @@
+/* ═══════════════════════════════════════════════
+   ART MODE & CULTURE — UTILS.CSS
+   Animations · Reveal · Inline styles mutualisés
+═══════════════════════════════════════════════ */
+
+/* ── ANIMATIONS KEYFRAMES ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+@keyframes zoomLightbox {
+  from { transform: scale(0.9); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* ── SPA PAGE DISPLAY ── */
+.page { display: none; opacity: 0; transition: opacity 0.5s ease; }
+.page.active { display: block; opacity: 1; }
+
+/* ── REVEAL (intersection observer) ── */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── UNIVERS CARD background image util ── */
+.univers-card {
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+/* ── ARTISTE GRID home ── */
+.artistes-grid-home .artiste-card { animation: none; }
+
+/* ── SUCCESS MESSAGE ── */
+.form-success {
+  display: none; text-align: center; padding: 40px;
+  border: 1px solid var(--gold); border-radius: 8px; margin-bottom: 32px;
+}
+.form-success-icon { font-size: 2.5rem; margin-bottom: 16px; }
+.form-success h3 { color: var(--gold); margin-bottom: 12px; }
+.form-success p { color: var(--beige); }
+
+/* ── NEWSLETTER INPUT ── */
+.newsletter-row {
+  display: flex; gap: 12px; max-width: 480px; margin: 0 auto;
+}
+.newsletter-input {
+  flex: 1; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(200,169,107,0.2); color: var(--off-white);
+  padding: 14px 16px; font-size: 0.88rem; font-family: 'Montserrat',sans-serif; outline: none;
+  transition: border-color .3s;
+}
+.newsletter-input:focus { border-color: var(--gold); }
+
+/* ── ADMIN TABLE BADGE inline util ── */
+#adminTable { position: relative; z-index: 1; }
+
+/* ── EVENTS PAGE HERO ── */
+.events-page-hero { padding: 140px 0 60px; }
+
+/* ── DON PAGE MONTANT ── */
+.don-impact-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin: 40px 0; }
+.don-impact-item {
+  background: rgba(255,255,255,0.02); border: 1px solid rgba(200,169,107,0.1);
+  padding: 28px 20px; text-align: center;
+}
+.don-impact-num { font-family: 'Cormorant Garamond',serif; font-size: 2.2rem; color: var(--gold); display: block; margin-bottom: 8px; }
+.don-impact-label { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.08em; }
+
+/* ── SCROLL INDICATOR ── */
+.hero-scroll {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  cursor: pointer; opacity: 0; animation: fadeIn 1s 1.5s forwards;
+}
+.hero-scroll span { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); }
+.scroll-line { width: 1px; height: 40px; background: var(--gold); animation: scrollPulse 2s ease-in-out infinite; }

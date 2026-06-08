@@ -1,0 +1,19 @@
+<section class="don-hero">
+  <div class="container">
+    <p class="section-label" style="justify-content:center;">Soutenir AMC</p>
+    <h1 class="section-title">Faire un <em>Don</em></h1>
+    <div class="divider" style="margin:24px auto 32px;"></div>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="container" style="max-width:800px;">
+    <div class="montants-grid">
+      <button class="montant-btn" onclick="selectMontant(this, 10)">10 €</button>
+      <button class="montant-btn active" onclick="selectMontant(this, 50)">50 €</button>
+      <button class="montant-btn" onclick="selectMontant(this, 100)">100 €</button>
+      <button class="montant-btn" onclick="selectMontant(this, 250)">250 €</button>
+    </div>
+    <div id="paypal-button-container-don"></div>
+  </div>
+</section>

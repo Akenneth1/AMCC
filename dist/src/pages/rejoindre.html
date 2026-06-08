@@ -1,0 +1,133 @@
+<section class="rejoindre-hero">
+  <div class="container">
+    <p class="section-label" style="justify-content:center;">Faites partie de l'aventure</p>
+    <h1 class="section-title">Rejoindre <em>AMC</em></h1>
+    <div class="divider" style="margin:24px auto;"></div>
+    <p style="max-width:580px; margin:0 auto; color:var(--beige); font-size:0.95rem; line-height:1.9;">
+      Artiste, créateur, bénévole ou simplement passionné de culture — votre place est dans notre communauté.
+    </p>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="container">
+    <div class="reveal" style="text-align:center; margin-bottom:48px;">
+      <p class="section-label" style="justify-content:center;">Votre profil</p>
+      <h2 class="section-title">Comment <em>participer</em></h2>
+    </div>
+    <div class="profils-grid">
+      <div class="profil-card reveal">
+        <div class="profil-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <h3 class="profil-title">Membre</h3>
+        <p class="profil-desc">Rejoignez la communauté AMC, participez aux événements et soutenez la culture à Lille en devenant membre adhérent.</p>
+      </div>
+      <div class="profil-card reveal">
+        <div class="profil-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <h3 class="profil-title">Bénévole</h3>
+        <p class="profil-desc">Contribuez à l'organisation de nos événements et devenez acteur de la vie culturelle lilloise en donnant de votre temps.</p>
+      </div>
+      <div class="profil-card reveal">
+        <div class="profil-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg></div>
+        <h3 class="profil-title">Artiste</h3>
+        <p class="profil-desc">Exposez votre travail, participez à nos événements et développez votre réseau au sein d'une communauté artistique engagée.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Cotisations -->
+<section style="background: rgba(255,255,255,0.02); border-top:1px solid rgba(200,169,107,0.1); border-bottom:1px solid rgba(200,169,107,0.1);">
+  <div class="container">
+    <div class="reveal" style="text-align:center; margin-bottom:56px;">
+      <p class="section-label" style="justify-content:center;">Adhésion</p>
+      <h2 class="section-title">Devenir <em>Membre</em></h2>
+    </div>
+    <div class="cotisations-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:32px; max-width:900px; margin:0 auto;">
+      <div class="cotisation-card reveal">
+        <h3 class="cotisation-title">Adhésion Annuelle</h3>
+        <div class="cotisation-price">30 €<span> / an</span></div>
+        <ul class="cotisation-features">
+          <li>Accès prioritaire aux événements</li>
+          <li>Tarifs réduits sur les ateliers</li>
+          <li>Droit de vote à l'AG</li>
+          <li>Newsletter exclusive</li>
+        </ul>
+        <button class="btn-primary" style="width:100%; margin-top:24px;" onclick="document.getElementById('adhesionForm').scrollIntoView({behavior:'smooth'})">Adhérer maintenant</button>
+      </div>
+      <div class="cotisation-card reveal featured">
+        <div class="cotisation-badge">Recommandé</div>
+        <h3 class="cotisation-title">Membre Bienfaiteur</h3>
+        <div class="cotisation-price">50 €+<span> / an</span></div>
+        <ul class="cotisation-features">
+          <li>Tous les avantages Membre</li>
+          <li>Mention sur nos supports</li>
+          <li>Invitation aux soirées VIP</li>
+          <li>Soutien renforcé à l'art</li>
+        </ul>
+        <button class="btn-primary" style="width:100%; margin-top:24px;" onclick="document.getElementById('adhesionForm').scrollIntoView({behavior:'smooth'})">Soutenir AMC</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="form-section">
+  <div class="container">
+    <div class="reveal" style="text-align:center; margin-bottom:48px;">
+      <p class="section-label" style="justify-content:center;">Inscription</p>
+      <h2 class="section-title">Formulaire <em>d'adhésion</em></h2>
+    </div>
+    
+    <div id="adhesionSuccess" style="display:none; text-align:center; padding:40px; border:1px solid var(--gold); border-radius:8px; margin-bottom:32px;">
+      <div style="font-size:2.5rem; margin-bottom:16px;">✓</div>
+      <h3 style="color:var(--gold); margin-bottom:12px;">Demande envoyée avec succès !</h3>
+      <p style="color:var(--beige); margin-bottom:24px;">Pour finaliser votre adhésion (30€), veuillez procéder au règlement ci-dessous :</p>
+      <div id="paypal-button-container-adhesion" style="max-width:400px; margin:0 auto;"></div>
+    </div>
+
+    <form class="form-grid" id="adhesionForm" onsubmit="event.preventDefault(); submitAdhesion();">
+      <div class="form-group reveal">
+        <label for="nom">Nom complet *</label>
+        <input type="text" id="nom" placeholder="Votre nom et prénom" required />
+      </div>
+      <div class="form-group reveal">
+        <label for="email">Email *</label>
+        <input type="email" id="email" placeholder="votre@email.com" required />
+      </div>
+      <div class="form-group reveal">
+        <label for="tel">Téléphone</label>
+        <input type="tel" id="tel" placeholder="06 00 00 00 00" />
+      </div>
+      <div class="form-group reveal">
+        <label for="dateNaissance">Date de naissance</label>
+        <input type="date" id="dateNaissance" />
+      </div>
+      <div class="form-group reveal">
+        <label for="profil">Profil *</label>
+        <select id="profil" required>
+          <option value="">Choisissez votre profil</option>
+          <option value="membre">Membre</option>
+          <option value="benevole">Bénévole</option>
+          <option value="artiste">Artiste</option>
+          <option value="exposant">Exposant</option>
+          <option value="partenaire">Partenaire</option>
+          <option value="sponsor">Sponsor</option>
+        </select>
+      </div>
+      <div class="form-group reveal">
+        <label for="ville">Ville</label>
+        <input type="text" id="ville" placeholder="Lille" />
+      </div>
+      <div class="form-group form-full reveal">
+        <label for="message">Message / Motivations</label>
+        <textarea id="message" placeholder="Parlez-nous de vous..."></textarea>
+      </div>
+      <div class="form-group form-full reveal" style="display:flex; align-items:flex-start; gap:12px; cursor:pointer;">
+        <input type="checkbox" id="rgpd" required style="width:auto; margin-top:4px;" />
+        <label for="rgpd" style="text-transform:none; font-size:0.8rem;">J'accepte que mes données soient conservées conformément au RGPD. *</label>
+      </div>
+      <div class="form-submit reveal">
+        <button class="btn-primary" type="submit">Envoyer ma demande</button>
+      </div>
+    </form>
+  </div>
+</section>

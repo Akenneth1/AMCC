@@ -1,0 +1,87 @@
+<section style="padding:120px 0 80px;">
+  <div class="container">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px;">
+      <h1 class="section-title">Mini <em>CMS AMC</em></h1>
+      <button class="btn-outline" onclick="adminLogout()">Se déconnecter</button>
+    </div>
+    <div class="admin-cms-container" style="display:flex; gap:32px; align-items:flex-start;">
+      <aside class="admin-cms-sidebar" style="width:200px; flex-shrink:0; position:sticky; top:100px;">
+        <button class="admin-cms-btn active" onclick="switchAdminTab('dash', this)">Dashboard</button>
+        <button class="admin-cms-btn" onclick="switchAdminTab('home', this)">Accueil</button>
+        <button class="admin-cms-btn" onclick="switchAdminTab('members', this)">Adhérents</button>
+        <button class="admin-cms-btn" onclick="switchAdminTab('artistes', this)">Artistes</button>
+        <button class="admin-cms-btn" onclick="switchAdminTab('galerie', this)">Galerie</button>
+      </aside>
+      <main class="admin-cms-content" style="flex:1;">
+        
+        <!-- Dashboard -->
+        <div id="tab-dash" class="admin-cms-tab active">
+          <p class="section-label">Aperçu</p>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-top:20px;">
+            <div class="glass" style="padding:24px; text-align:center; background:rgba(255,255,255,0.02); border:1px solid rgba(200,169,107,0.1);">
+              <div id="admin-stat-total" style="font-size:2.5rem; color:var(--gold);">0</div>
+              <p style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; margin-top:8px;">Membres total</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accueil -->
+        <div id="tab-home" class="admin-cms-tab">
+          <p class="section-label">Contenu Page d'Accueil</p>
+          <div class="cms-form" style="margin-top:20px; max-width:500px;">
+            <div class="form-group"><label>Titre Hero</label><input type="text" id="cms-home-title" placeholder="Art Mode & Culture" /></div>
+            <div class="form-group"><label>Sous-titre Hero</label><textarea id="cms-home-sub" placeholder="L'art, la mode et la culture au cœur de Lille."></textarea></div>
+            <button class="btn-primary" onclick="cmsUpdateHome()">Mettre à jour l'accueil</button>
+          </div>
+        </div>
+
+        <!-- Membres -->
+        <div id="tab-members" class="admin-cms-tab">
+          <p class="section-label">Gestion des Adhérents</p>
+          <div class="admin-table-wrap" style="margin-top:20px;">
+            <table id="adminTable">
+              <thead>
+                <tr>
+                  <th>NOM</th><th>PROFIL</th><th>STATUT</th><th style="text-align:right;">ACTION</th>
+                </tr>
+              </thead>
+              <tbody id="adminTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Artistes -->
+        <div id="tab-artistes" class="admin-cms-tab">
+          <p class="section-label">Gestion des Artistes</p>
+          <div class="cms-form" style="margin:20px 0 40px; max-width:500px;">
+            <div class="form-group"><label>Nom complet</label><input type="text" id="cms-art-name" placeholder="Ex: Sophie Martin" /></div>
+            <div class="form-group"><label>Discipline</label><input type="text" id="cms-art-job" placeholder="Ex: Artiste Peintre" /></div>
+            <div class="form-group"><label>Bio courte</label><textarea id="cms-art-bio" placeholder="Description de l'artiste..."></textarea></div>
+            <div class="form-group"><label>Photo de profil</label><input type="file" id="cms-art-img" accept="image/*" /></div>
+            <button class="btn-primary" onclick="cmsAddArtiste()">Ajouter l'artiste</button>
+          </div>
+          <div id="cms-artistes-list"></div>
+        </div>
+
+        <!-- Galerie -->
+        <div id="tab-galerie" class="admin-cms-tab">
+          <p class="section-label">Gestion Galerie</p>
+          <div class="cms-form" style="margin-top:20px; max-width:500px;">
+            <div class="form-group"><label>Fichier Image</label><input type="file" multiple accept="image/*" /></div>
+            <div class="form-group">
+              <label>Catégorie</label>
+              <select>
+                <option value="defiles">Défilés</option>
+                <option value="concerts">Concerts</option>
+                <option value="expositions">Expositions</option>
+                <option value="backstages">Backstage</option>
+              </select>
+            </div>
+            <button class="btn-primary" onclick="alert('Bientôt disponible')">Uploader vers Firebase</button>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+</section>

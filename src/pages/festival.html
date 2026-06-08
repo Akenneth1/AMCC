@@ -1,0 +1,69 @@
+<section class="festival-hero">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label" style="justify-content:center;">Grand événement 2026</p>
+      <h1 class="section-title">Festival Culturel<br/>du Continent Africain</h1>
+      <div class="divider" style="margin:24px auto;"></div>
+      <p style="max-width:680px; margin:0 auto; color:var(--beige); font-size:1.1rem; line-height:1.8;">
+        <strong>4ème Édition — 11 &amp; 12 juillet 2026</strong><br/>
+        Un grand rendez-vous célébrant la diversité culturelle africaine à Lille dans un esprit de partage et de fraternité.
+      </p>
+
+      <div class="countdown-container">
+        <div class="countdown-box">
+          <span id="cd-days" class="countdown-num">00</span>
+          <span class="countdown-label">Jours</span>
+        </div>
+        <div class="countdown-box">
+          <span id="cd-hours" class="countdown-num">00</span>
+          <span class="countdown-label">Heures</span>
+        </div>
+        <div class="countdown-box">
+          <span id="cd-mins" class="countdown-num">00</span>
+          <span class="countdown-label">Mins</span>
+        </div>
+        <div class="countdown-box">
+          <span id="cd-secs" class="countdown-num">00</span>
+          <span class="countdown-label">Secs</span>
+        </div>
+      </div>
+      
+      <div style="margin-top:32px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+        <button class="btn-primary" onclick="document.getElementById('festival-inscription').scrollIntoView({behavior:'smooth'})">S'inscrire à l'événement</button>
+        <button class="btn-outline" onclick="navigate('rejoindre')">Devenir partenaire</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Exposants -->
+<section>
+  <div class="container">
+    <div class="reveal" style="text-align:center; margin-bottom:48px;">
+      <p class="section-label" style="justify-content:center;">Artisans & Créateurs</p>
+      <h2 class="section-title">Les <em>Exposants</em></h2>
+    </div>
+    <div class="exposants-grid" id="exposants-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+      <!-- Rendu dynamique par ui.js -->
+    </div>
+  </div>
+</section>
+
+<!-- Inscription -->
+<section class="festival-inscription" id="festival-inscription">
+  <div class="container" style="text-align:center;">
+    <div class="reveal">
+      <p class="section-label" style="justify-content:center;">Réservation</p>
+      <h2 class="section-title">Prendre son <em>Pass</em></h2>
+      <p style="color:var(--beige); margin-bottom:32px;">Réservez votre place pour le festival 2026.</p>
+      
+      <select id="fest-pass" class="fest-pass-select">
+        <option value="0">Pass Journalier — Gratuit (Accès libre)</option>
+        <option value="15">Pass Soirée Gala — 15 €</option>
+        <option value="25">Pass Full Festival (2 jours) — 25 €</option>
+      </select>
+      
+      <div id="paypal-button-container-festival" style="max-width:400px; margin:0 auto;"></div>
+    </div>
+  </div>
+</section>
