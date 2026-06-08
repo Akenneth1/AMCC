@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/amc2/',
+  base: '/AMCC/',
   publicDir: 'public',
   build: {
     outDir: 'dist',
