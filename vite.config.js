@@ -33,7 +33,7 @@ function injectPages() {
 }
 
 export default defineConfig({
-  base: '/AMCC/',
+  base: '/',
   plugins: [injectPages()],
   publicDir: 'public',
   build: {
