@@ -1,6 +1,7 @@
 // ── ADMIN.JS — CMS · Login · Membres · Artistes ──────────────
 
 import { db, storage }   from '../config/firebase.js';
+import { artistes }      from '../config/data.js';
 import {
   collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, serverTimestamp
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
@@ -162,29 +163,30 @@ export async function cmsAddArtiste() {
   }
 }
 
-export async function loadArtistes() {
-  const container = document.getElementById('cms-artistes-list');
-  if (!container) return;
-  container.innerHTML = '<p style="text-align:center;">Chargement...</p>';
-  try {
-    const q    = query(collection(db, 'artistes'), orderBy('createdAt', 'desc'));
-    const snap = await getDocs(q);
-    if (snap.empty) {
-      container.innerHTML = '<p style="color:var(--muted);text-align:center;">Aucun artiste enregistré.</p>';
-      return;
-    }
-    container.innerHTML = `
-      <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:20px;">
-        ${snap.docs.map(d => {
-          const art = d.data();
-          return `<div class="artiste-card" style="border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); padding:10px;">
-            <img src="${art.imageUrl}" style="width:100%; height:150px; object-fit:cover; margin-bottom:10px;">
-            <h4 style="font-size:0.9rem;">${escHtml(art.name)}</h4>
-            <p style="font-size:0.7rem; color:var(--gold);">${escHtml(art.job)}</p>
-          </div>`;
-        }).join('')}
-      </div>`;
-  } catch { container.innerHTML = '<p>Erreur chargement.</p>'; }
+export function loadArtistes() {
+  renderArtistesGrid(artistes);
+}
+
+export function renderArtistesGrid(list) {
+  const grid = document.getElementById('artistes-grid');
+  if (!grid) return;
+  if (!list || list.length === 0) {
+    grid.innerHTML = '<p style="text-align:center; color:var(--muted); padding:80px 0;">Les artistes seront bientôt présentés ici.</p>';
+    return;
+  }
+  grid.innerHTML = list.map(a => `
+    <div class="artiste-card reveal">
+      <div class="artiste-img">
+        <img src="${a.img}" alt="${escHtml(a.nom)}" loading="lazy"
+             onerror="this.src='/AMCC/logo.png'; this.style.opacity='0.4';">
+        <div class="artiste-overlay"></div>
+      </div>
+      <div class="artiste-body">
+        <h3 class="artiste-name">${escHtml(a.nom)}</h3>
+        <p class="artiste-discipline">${escHtml(a.discipline)}</p>
+        <p class="artiste-bio">${escHtml(a.bio)}</p>
+      </div>
+    </div>`).join('');
 }
 
 export function exportCSV() {

@@ -8,9 +8,11 @@ import { renderEvents, renderExposants,
          initFestivalCountdown, openFestivalModal, closeFestivalModal } from './ui.js';
 import { submitAdhesion, submitContact } from './forms.js';
 import { adminLogin, adminLogout, adminRefresh, deleteMember,
-         switchAdminTab, cmsAddArtiste, cmsUpdateHome, exportCSV } from './admin.js';
+         switchAdminTab, cmsAddArtiste, cmsUpdateHome, exportCSV,
+         renderArtistesGrid } from './admin.js';
 import { initPayPal }       from './paypal.js';
 import { filterGalerie, renderGalerie, renderGalerieHome } from './galerie.js';
+import { artistes } from '../config/data.js';
 
 // ── FILTRAGE ÉVÉNEMENTS ───────────────────────────────────────
 function filterEvents(cat, btn) {
@@ -70,6 +72,16 @@ document.addEventListener('DOMContentLoaded', () => {
       if (entry.isIntersecting) { startCounters(); io.disconnect(); }
     }, { threshold: 0.2 });
     io.observe(counterSection);
+  }
+
+  // Artistes accueil — masque la section si aucun artiste configuré
+  const section = document.getElementById('section-artistes-home');
+  const gridHome = document.getElementById('artistes-grid-home');
+  if (artistes.length === 0) {
+    if (section) section.style.display = 'none';
+  } else {
+    const preview = artistes.slice(0, 3);
+    if (gridHome) renderArtistesGrid(preview);
   }
 
   setTimeout(initPayPal, 2000);

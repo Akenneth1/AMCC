@@ -135,24 +135,20 @@ export const galerieImages = [
   { src: '/AMCC/galerie/public/472700731_17911223979086373_7301952942377907097_n.jpg', cat: 'public', alt: 'Public AMC' }
 ];
 
-// ── ARTISTES HOME (vitrines statiques) ───────────────────────
-export const artistesHome = [
-  {
-    nom: 'Sophie Martin', discipline: 'Peintre · Arts visuels',
-    bio: 'Artiste peintre spécialisée dans l\'art abstrait contemporain.',
-    img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=75'
-  },
-  {
-    nom: 'Kévin Toussaint', discipline: 'Musicien · Électronique',
-    bio: 'Producteur de musique électronique créant des expériences sonores immersives.',
-    img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=75'
-  },
-  {
-    nom: 'Aïcha Diallo', discipline: 'Danseuse · Danse contemporaine',
-    bio: 'Chorégraphe mêlant tradition et modernité dans ses créations innovantes.',
-    img: 'https://images.unsplash.com/photo-1494790108755-2616b7f2b78b?w=400&q=75'
-  }
+// ── ARTISTES ─────────────────────────────────────────────────
+// Pour ajouter un artiste : ajouter une entrée ici et placer
+// sa photo dans public/photo-annexes/pages_artistes/
+export const artistes = [
+  // Exemples à remplacer par les vrais artistes :
+  // {
+  //   nom: 'Prénom Nom',
+  //   discipline: 'Chanteur · R&B',
+  //   bio: 'Description de l\'artiste...',
+  //   img: '/AMCC/photo-annexes/pages_artistes/nom-du-fichier.jpg'
+  // },
 ];
+
+export const artistesHome = artistes.slice(0, 3);
 
 // ── EXPOSANTS FESTIVAL 2026 ───────────────────────────────────
 export const exposants = [
