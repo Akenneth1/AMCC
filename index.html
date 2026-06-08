@@ -14,7 +14,7 @@
   <!-- Chemins relatifs pour assurer la compatibilité GitHub Pages -->
 
   <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=EUR" defer></script>
-  <script type="module" crossorigin src="/AMCC/assets/main-rE51QDw5.js"></script>
+  <script type="module" crossorigin src="/AMCC/assets/main-B94KbhTp.js"></script>
   <link rel="stylesheet" crossorigin href="/AMCC/assets/main-D59Or1_5.css">
 </head>
 <body>
@@ -721,7 +721,7 @@
           </div>
         </div>
 
-        <form class="form-grid" style="max-width:100%; margin:0;" onsubmit="event.preventDefault(); alert('Message envoyé !');">
+        <form id="contact-form" class="form-grid" style="max-width:100%; margin:0;" onsubmit="event.preventDefault(); submitContact();">
           <div class="form-group">
             <label for="c-nom">Votre Nom</label>
             <input type="text" id="c-nom" placeholder="Nom complet" required />
@@ -738,6 +738,10 @@
             <button class="btn-primary" type="submit">Envoyer le message</button>
           </div>
         </form>
+        <div id="contact-success" style="display:none; text-align:center; padding:40px 0;">
+          <p style="font-family:'Cormorant Garamond',serif; font-size:1.6rem; color:var(--gold); margin-bottom:12px;">Message envoyé !</p>
+          <p style="color:var(--beige); font-size:0.9rem;">Merci, nous vous répondrons dans les plus brefs délais.</p>
+        </div>
       </div>
 
     </div>
