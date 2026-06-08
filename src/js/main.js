@@ -6,7 +6,7 @@ import { renderEvents, renderExposants,
          initLogo3D, initLiquidBg, observeReveal, startCounters,
          openLightbox, closeLightbox,
          initFestivalCountdown, openFestivalModal, closeFestivalModal } from './ui.js';
-import { submitAdhesion }   from './forms.js';
+import { submitAdhesion, submitContact } from './forms.js';
 import { adminLogin, adminLogout, adminRefresh, deleteMember,
          switchAdminTab, cmsAddArtiste, cmsUpdateHome, exportCSV } from './admin.js';
 import { initPayPal }       from './paypal.js';
@@ -40,6 +40,7 @@ window.filterGalerie     = filterGalerie;
 window.filterEvents      = filterEvents;
 window.selectMontant     = selectMontant;
 window.submitAdhesion    = submitAdhesion;
+window.submitContact     = submitContact;
 window.adminLogin        = adminLogin;
 window.adminLogout       = adminLogout;
 window.adminRefresh      = adminRefresh;

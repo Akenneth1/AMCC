@@ -11,7 +11,7 @@
 }
 .festival-hero {
   background: linear-gradient(to bottom, rgba(14,14,14,0.7), var(--black)),
-              url('/photo-annexes/page-festivales-2026/Gala/gala.jpg');
+              url('/AMCC/photo-annexes/page-festivales-2026/Gala/gala.jpg');
   background-size: cover; background-position: center;
   padding: 140px 0 80px; text-align: center;
 }
