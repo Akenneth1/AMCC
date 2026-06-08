@@ -24,11 +24,8 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Inject pages into index.html
-        run: node build-inject.js
-
       - name: Build project
-        run: npx vite build
+        run: npm run build
         env:
           VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
           VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
@@ -39,14 +36,6 @@ jobs:
           VITE_SHEETDB_URL: ${{ secrets.VITE_SHEETDB_URL }}
           VITE_ADMIN_EMAIL: ${{ secrets.VITE_ADMIN_EMAIL }}
           VITE_ADMIN_HASH: ${{ secrets.VITE_ADMIN_HASH }}
-
-      - name: Copy static assets to dist
-        run: |
-          mkdir -p dist/galerie
-          mkdir -p dist/photo-annexes
-          cp -r public/galerie/. dist/galerie/
-          cp -r public/photo-annexes/. dist/photo-annexes/
-          cp public/logo.png dist/logo.png
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

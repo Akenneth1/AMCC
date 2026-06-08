@@ -13,9 +13,19 @@ const firebaseConfig = {
   appId:             import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-const app     = initializeApp(firebaseConfig);
-const db      = getFirestore(app);
-const storage = getStorage(app);
-const auth    = getAuth(app);
+let db, storage, auth;
+
+try {
+  if (firebaseConfig.apiKey && firebaseConfig.apiKey !== 'undefined') {
+    const app = initializeApp(firebaseConfig);
+    db      = getFirestore(app);
+    storage = getStorage(app);
+    auth    = getAuth(app);
+  } else {
+    console.info('Firebase: config absente, mode fallback SheetDB actif.');
+  }
+} catch (e) {
+  console.warn('Firebase init échouée:', e.message);
+}
 
 export { db, storage, auth };

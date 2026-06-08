@@ -139,7 +139,7 @@ export async function cmsAddArtiste() {
   btn.disabled = true;
 
   try {
-    let url = '/logo.png';
+    let url = '/AMCC/logo.png';
     if (file) {
       const sRef = ref(storage, `artistes/${Date.now()}_${file.name}`);
       const snap = await uploadBytes(sRef, file);

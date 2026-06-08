@@ -24,7 +24,7 @@ export function renderEvents(cat = 'tous') {
   grid.innerHTML = filtered.map(e => `
     <article class="event-card reveal">
       <div class="event-img">
-        <img src="/${e.img}" alt="${e.titre}" loading="lazy" onerror="this.src='/logo.png';">
+        <img src="${e.img}" alt="${e.titre}" loading="lazy" onerror="this.src='/AMCC/logo.png';">
         <div class="event-img-overlay"></div>
         <span class="event-tag">${e.tag.toUpperCase()}</span>
       </div>
