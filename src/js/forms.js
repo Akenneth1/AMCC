@@ -5,8 +5,7 @@ import { collection, addDoc, serverTimestamp }
   from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 import { navigate }    from './nav.js';
 
-const SHEETDB_URL = (import.meta.env?.VITE_SHEETDB_URL) ||
-  'https://sheetdb.io/api/v1/yf325l4woltxi';
+const SHEETDB_URL = import.meta.env?.VITE_SHEETDB_URL || '';
 
 function isFirebaseReady() {
   return import.meta.env?.VITE_FIREBASE_API_KEY &&

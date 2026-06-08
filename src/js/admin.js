@@ -7,9 +7,9 @@ import {
 import { ref, uploadBytes, getDownloadURL }
   from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
 
-const SHEETDB_URL  = import.meta.env?.VITE_SHEETDB_URL || 'https://sheetdb.io/api/v1/yf325l4woltxi';
-const ADMIN_EMAIL  = import.meta.env?.VITE_ADMIN_EMAIL  || 'artmodeculture@gmail.com';
-const ADMIN_HASH   = import.meta.env?.VITE_ADMIN_HASH   || '43151764bcdfc907da60f13d47fc166768829be22a13bacbc51c46256f61a78b';
+const SHEETDB_URL  = import.meta.env?.VITE_SHEETDB_URL  || '';
+const ADMIN_EMAIL  = import.meta.env?.VITE_ADMIN_EMAIL  || '';
+const ADMIN_HASH   = import.meta.env?.VITE_ADMIN_HASH   || '';
 
 function isFirebaseReady() {
   return import.meta.env?.VITE_FIREBASE_API_KEY &&
