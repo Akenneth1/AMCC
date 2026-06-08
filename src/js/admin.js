@@ -140,7 +140,7 @@ export async function cmsAddArtiste() {
   btn.disabled = true;
 
   try {
-    let url = '/AMCC/logo.png';
+    let url = '/logo.png';
     if (file) {
       const sRef = ref(storage, `artistes/${Date.now()}_${file.name}`);
       const snap = await uploadBytes(sRef, file);
@@ -178,7 +178,7 @@ export function renderArtistesGrid(list) {
     <div class="artiste-card reveal">
       <div class="artiste-img">
         <img src="${a.img}" alt="${escHtml(a.nom)}" loading="lazy"
-             onerror="this.src='/AMCC/logo.png'; this.style.opacity='0.4';">
+             onerror="this.src='/logo.png'; this.style.opacity='0.4';">
         <div class="artiste-overlay"></div>
       </div>
       <div class="artiste-body">
@@ -192,3 +192,4 @@ export function renderArtistesGrid(list) {
 export function exportCSV() {
   alert('Export CSV indisponible en mode démo.');
 }
+
