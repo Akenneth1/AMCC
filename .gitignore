@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Dossiers projets externes
+j/
+
 # Build output
 dist/
 
