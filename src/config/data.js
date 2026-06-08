@@ -142,43 +142,37 @@ export const artistes = [
     nom: 'Azganush Petrosyan',
     discipline: 'Chanteuse · Lyrique',
     bio: 'Née en Arménie où la musique l\'a bercée dès l\'enfance, Azganush Petrosyan s\'installe en France et décroche un diplôme en Arts de la scène et du spectacle vivant. Sa voix — alliance rare d\'une pureté classique et de reflets légèrement enroués — crée une signature sonore immédiatement reconnaissable, qui touche et surprend à la fois.',
-    img: '/AMCC/photo-annexes/pages_artistes/azganush-petrosyan.jpg'
-  },
-  {
-    nom: 'Ashkhen Petrosyan',
-    discipline: 'Comédienne · Autrice-compositrice-interprète',
-    bio: 'Artiste totale, Ashkhen Petrosyan est originaire d\'Arménie et passionnée de musique dès l\'enfance. Installée en France en 2012, elle approfondit sa pratique en étudiant les Arts de la scène et du spectacle vivant. Ses créations invitent à un voyage intime, entre douces mélodies et émotions sincères.',
-    img: '/AMCC/photo-annexes/pages_artistes/ashkhen-petrosyan.jpg'
+    img: '/AMCC/photo-annexes/pages_artistes/azganush-petrosyan.png'
   },
   {
     nom: 'Mani Bella',
     discipline: 'Chanteuse · Bikutsi',
     bio: 'Icône de la scène musicale camerounaise, Mani Bella a grandi avec le rythme dans la peau. Des kermesses du lycée aux cabarets, elle conquiert chaque salle avant de s\'imposer à tout un pays. Son premier album « Pousse la vie » et son hit « Kongossa » lui valent la Meilleure Artiste Féminine au Festi Bikutsi et la Révélation Féminine 2011 au Mvet d\'Or.',
-    img: '/AMCC/photo-annexes/pages_artistes/mani-bella.jpg'
+    img: '/AMCC/photo-annexes/pages_artistes/mani-bella.png'
   },
   {
     nom: 'Armelle Diamant',
     discipline: 'Chanteuse · Afro-Soul',
     bio: 'Armelle Diamant s\'est imposée sur la scène camerounaise avec « Azombo », titre porté par une sincérité désarmante qui en a fait l\'une des chansons les plus écoutées du pays. Ce chant dédié à sa mère révèle une artiste capable de transformer ses émotions les plus intimes en une musique qui touche des milliers d\'âmes.',
-    img: '/AMCC/photo-annexes/pages_artistes/armelle-diamant.jpg'
+    img: '/AMCC/photo-annexes/pages_artistes/armelle-diamant.png'
   },
   {
     nom: 'Bridget Jet',
     discipline: 'Chanteuse · Afropop',
     bio: 'Originaire du Cameroun, Bridget Jet est une artiste qui puise dans les réalités du quotidien pour composer des chansons authentiques et incarnées. Autrice, compositrice et interprète, elle transforme les fragments de vie en mélodies qui résonnent avec une vérité universelle.',
-    img: '/AMCC/photo-annexes/pages_artistes/bridget-jet.jpg'
+    img: '/AMCC/photo-annexes/pages_artistes/bridget-jet.png'
   },
   {
     nom: 'Francine Amougou',
     discipline: 'Styliste · Mode & Événementiel',
     bio: 'Fondatrice de l\'agence Petrus Amelos Fashion & Events, Francine Amougou a forgé sa réussite avec la seule arme de sa détermination. Née à Zoétélé au Cameroun, elle a baptisé sa création du prénom de ses parents, Pierre et Amélie — un hommage vibrant à ceux qu\'elle a perdus. Femme forte et inspirante, elle prouve que la ténacité est le plus beau des héritages.',
-    img: '/AMCC/photo-annexes/pages_artistes/francine-amougou.jpg'
+    img: '/AMCC/photo-annexes/pages_artistes/petrus-amelos.png'
   },
   {
     nom: 'Engo Na\'a',
     discipline: 'Musicien · Guitare & Chant',
     bio: 'Arrivé à Lille en 2016, Engo Na\'a a trouvé dans la musique le langage qui lui manquait. Autodidacte acharné, il a consacré des nuits entières à dompter la guitare pour réaliser un rêve d\'enfant. Ses chansons sont des ponts entre deux mondes — portant la nostalgie de sa terre natale avec une grâce et une profondeur rares.',
-    img: '/AMCC/photo-annexes/pages_artistes/engo-naa.jpg'
+    img: '/AMCC/photo-annexes/pages_artistes/engo-naa.png'
   },
 ];
 
