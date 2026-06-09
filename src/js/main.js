@@ -12,7 +12,7 @@ import { adminLogin, adminLogout, adminRefresh, deleteMember,
          renderArtistesGrid } from './admin.js';
 import { initPayPal }       from './paypal.js';
 import { filterGalerie, renderGalerie, renderGalerieHome } from './galerie.js';
-import { artistes } from '../config/data.js';
+import { artistes, evenements } from '../config/data.js';
 
 // ── FILTRAGE ÉVÉNEMENTS ───────────────────────────────────────
 function filterEvents(cat, btn) {
@@ -58,12 +58,34 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavScroll();
   initLiquidBg();
 
-  // Les pages sont déjà dans le DOM — on active juste l'accueil
   navigate('accueil');
   initLogo3D();
   observeReveal();
   renderGalerieHome();
   initFestivalCountdown();
+
+  // Événements accueil — 3 premiers depuis data.js (synchro automatique)
+  const accueilGrid = document.getElementById('accueil-events-grid');
+  if (accueilGrid) {
+    const preview = evenements.slice(0, 3);
+    accueilGrid.innerHTML = preview.map(e => `
+      <article class="event-card reveal">
+        <div class="event-img">
+          <img src="${e.img}" alt="${e.titre}" loading="lazy" onerror="this.src='/AMCC/logo.png';">
+          <div class="event-img-overlay"></div>
+          <span class="event-tag">${e.tag.toUpperCase()}</span>
+        </div>
+        <div class="event-body">
+          <p class="event-meta">${e.date}</p>
+          <h3 class="event-title">${e.titre}</h3>
+          <p class="event-desc">${e.desc}</p>
+          <button class="event-btn" onclick="navigate('${e.lien || 'evenements'}')">
+            En savoir plus <span>&#8594;</span>
+          </button>
+        </div>
+      </article>`).join('');
+    observeReveal();
+  }
 
   // Counters (déclenché quand visible)
   const counterSection = document.querySelector('.chiffres-section');
@@ -84,6 +106,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (gridHome) renderArtistesGrid(preview);
   }
 
-  setTimeout(initPayPal, 2000);
+  // Initialise PayPal dès que le SDK est disponible (max 10s)
+  let paypalAttempts = 0;
+  const paypalInterval = setInterval(() => {
+    if (window.paypal) { clearInterval(paypalInterval); initPayPal(); return; }
+    if (++paypalAttempts > 100) clearInterval(paypalInterval);
+  }, 100);
 });
 

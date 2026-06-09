@@ -7,8 +7,17 @@ import { initPayPal }    from './paypal.js';
 
 // ── NAVIGATE (SPA) ────────────────────────────────────────────
 // Les pages sont déjà injectées dans le DOM au build — pas de fetch nécessaire.
+function isAdminSessionValid() {
+  const token = sessionStorage.getItem('amc_admin_session');
+  const ts    = sessionStorage.getItem('amc_admin_ts');
+  if (!token || !ts) return false;
+  if (token.length !== 64) return false;                      // doit être un hash SHA-256
+  if (Date.now() - parseInt(ts) > 7_200_000) return false;   // expire après 2h
+  return true;
+}
+
 export function navigate(page) {
-  if (page === 'admin' && !sessionStorage.getItem('amc_admin_session')) {
+  if (page === 'admin' && !isAdminSessionValid()) {
     page = 'admin-login';
   }
 

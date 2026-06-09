@@ -38,7 +38,9 @@ export async function adminLogin() {
   const pwdHash = await hashString(pwd);
 
   if (email === ADMIN_EMAIL && pwdHash === ADMIN_HASH) {
-    sessionStorage.setItem('amc_admin_session', '1');
+    const sessionToken = await hashString(ADMIN_HASH + Date.now().toString().slice(0, -3));
+    sessionStorage.setItem('amc_admin_session', sessionToken);
+    sessionStorage.setItem('amc_admin_ts', Date.now().toString());
     window.navigate?.('admin');
   } else {
     alert('Identifiants incorrects.');
