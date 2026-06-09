@@ -8,7 +8,12 @@ import {
 import { ref, uploadBytes, getDownloadURL }
   from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
 
-const SHEETDB_URL  = import.meta.env?.VITE_SHEETDB_URL  || 'https://sheetdb.io/api/v1/yf325l4woltxi';
+// En production (Hostinger), le proxy PHP masque la vraie URL SheetDB.
+// En développement local (vite dev), on pointe directement sur SheetDB.
+const SHEETDB_URL = import.meta.env?.VITE_SHEETDB_URL
+  || (location.hostname === 'localhost' || location.hostname === '127.0.0.1'
+      ? 'https://sheetdb.io/api/v1/yf325l4woltxi'
+      : './api/sheetdb.php');
 const ADMIN_EMAIL  = import.meta.env?.VITE_ADMIN_EMAIL  || 'artmodeculture@gmail.com';
 const ADMIN_HASH   = import.meta.env?.VITE_ADMIN_HASH   || '43151764bcdfc907da60f13d47fc166768829be22a13bacbc51c46256f61a78b';
 
