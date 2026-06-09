@@ -298,3 +298,4 @@ section { padding: 100px 0; }
   text-transform: uppercase; cursor: pointer; transition: all .3s;
 }
 .filter-btn.active, .filter-btn:hover { background: var(--gold); color: var(--black); border-color: var(--gold); }
+

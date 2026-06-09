@@ -65,3 +65,4 @@ export function applyStoredTheme() {
     document.body.classList.add('light-theme');
   }
 }
+

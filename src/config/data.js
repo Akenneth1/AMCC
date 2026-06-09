@@ -193,3 +193,4 @@ export const exposants = [
   { nom: 'Afro News TV', cat: 'Média & Presse africaine', wide: true, desc: 'Média d\'informations couvrant l\'actualité africaine et de la diaspora. Afro News TV sera présent au festival pour assurer la couverture médiatique de l\'événement et diffuser les temps forts auprès de leur audience.' }
 ];
 
+

@@ -82,3 +82,4 @@
 }
 .hero-scroll span { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); }
 .scroll-line { width: 1px; height: 40px; background: var(--gold); animation: scrollPulse 2s ease-in-out infinite; }
+

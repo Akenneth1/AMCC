@@ -86,3 +86,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setTimeout(initPayPal, 2000);
 });
+

@@ -53,3 +53,4 @@ export function initPayPal() {
     }).render('#paypal-button-container-festival');
   }
 }
+

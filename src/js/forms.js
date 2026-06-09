@@ -99,3 +99,4 @@ export async function submitAdhesion() {
     if (btn) { btn.textContent = originalText; btn.disabled = false; }
   }
 }
+
