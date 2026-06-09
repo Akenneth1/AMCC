@@ -11,7 +11,7 @@ export function renderGalerie() {
   grid.innerHTML = galerieImages.map(img => `
     <div class="galerie-full-item" data-cat="${img.cat}"
          onclick="openLightbox(this)">
-      <img src="${img.src}" alt="${img.alt}" loading="lazy" onerror="this.src='/logo.png'; this.style.opacity='0.5';">
+      <img src="${img.src}" alt="${img.alt}" loading="lazy" onerror="this.src='./logo.png'; this.style.opacity='0.5';">
       <div class="galerie-full-overlay">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
              stroke="white" stroke-width="1.5">
@@ -69,7 +69,7 @@ export function renderGalerieHome() {
 
   grid.innerHTML = selection.map((img, i) => `
     <div class="galerie-item ${layouts[i] || ''}" onclick="openLightbox(this)">
-      <img src="${img.src}" alt="${img.alt}" loading="lazy" onerror="this.src='/logo.png';">
+      <img src="${img.src}" alt="${img.alt}" loading="lazy" onerror="this.src='./logo.png';">
       <div class="galerie-overlay">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
              stroke="white" stroke-width="1.5">

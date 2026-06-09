@@ -8,9 +8,9 @@ import {
 import { ref, uploadBytes, getDownloadURL }
   from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
 
-const SHEETDB_URL  = import.meta.env?.VITE_SHEETDB_URL  || 'https://sheetdb.io/api/v1/yf325l4woltxi';
-const ADMIN_EMAIL  = import.meta.env?.VITE_ADMIN_EMAIL  || 'artmodeculture@gmail.com';
-const ADMIN_HASH   = import.meta.env?.VITE_ADMIN_HASH   || '43151764bcdfc907da60f13d47fc166768829be22a13bacbc51c46256f61a78b';
+const SHEETDB_URL  = import.meta.env?.VITE_SHEETDB_URL  || '';
+const ADMIN_EMAIL  = import.meta.env?.VITE_ADMIN_EMAIL  || '';
+const ADMIN_HASH   = import.meta.env?.VITE_ADMIN_HASH   || '';
 
 function isFirebaseReady() {
   return import.meta.env?.VITE_FIREBASE_API_KEY &&
@@ -142,7 +142,7 @@ export async function cmsAddArtiste() {
   btn.disabled = true;
 
   try {
-    let url = '/logo.png';
+    let url = './logo.png';
     if (file) {
       const sRef = ref(storage, `artistes/${Date.now()}_${file.name}`);
       const snap = await uploadBytes(sRef, file);
@@ -180,7 +180,7 @@ export function renderArtistesGrid(list) {
     <div class="artiste-card reveal">
       <div class="artiste-img">
         <img src="${a.img}" alt="${escHtml(a.nom)}" loading="lazy"
-             onerror="this.src='/logo.png'; this.style.opacity='0.4';">
+             onerror="this.src='./logo.png'; this.style.opacity='0.4';">
         <div class="artiste-overlay"></div>
       </div>
       <div class="artiste-body">
