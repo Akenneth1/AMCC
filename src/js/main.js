@@ -9,7 +9,8 @@ import { renderEvents, renderExposants,
 import { submitAdhesion, submitContact } from './forms.js';
 import { adminLogin, adminLogout, adminRefresh, deleteMember,
          switchAdminTab, cmsAddArtiste, cmsUpdateHome, exportCSV,
-         renderArtistesGrid, deleteArtiste, loadArtistesAdmin } from './admin.js';
+         renderArtistesGrid, deleteArtiste, loadArtistesAdmin,
+         loadArtistes, filterArtistes } from './admin.js';
 import { initPayPal }       from './paypal.js';
 import { filterGalerie, renderGalerie, renderGalerieHome } from './galerie.js';
 import { artistes, evenements } from '../config/data.js';
@@ -57,12 +58,6 @@ function renderArtistes(cat = 'tous') {
     </div>`).join('');
 
   setTimeout(observeReveal, 100);
-}
-
-function filterArtistes(cat, btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  renderArtistes(cat);
 }
 
 // ── MONTANT DON ───────────────────────────────────────────────

@@ -207,12 +207,82 @@ async function fetchAllArtistes() {
 }
 
 // Page publique partenaires — sans bouton supprimer
+let currentArtistes = [];
+let currentArtisteCat = 'tous';
+
+function slugifyCategory(value) {
+  return String(value || '')
+    .normalize('NFD').replace(/\p{Diacritic}/gu, '')
+    .toLowerCase()
+    .replace(/\s*·\s*/g, ' ')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+}
+
+function getArtisteCategory(artiste) {
+  if (artiste.cat) return artiste.cat;
+  const discipline = String(artiste.discipline || '').toLowerCase();
+  if (/\b(chanteur|chanteuse|chant|chanson|interpr[eè]te|lyrique|afropop|afro-soul|bikutsi|soul)\b/.test(discipline)) {
+    return 'chanteurs';
+  }
+  if (/\b(mode|styliste|fashion|designer|mannequin|haut-de-gamme|créateur|créatrice)\b/.test(discipline)) {
+    return 'mode';
+  }
+  const parts = String(artiste.discipline || '').split('·').map(p => p.trim()).filter(Boolean);
+  return slugifyCategory(parts[0] || discipline || 'autres') || 'autres';
+}
+
+function formatCategoryLabel(cat) {
+  if (!cat || cat === 'tous') return 'Tous';
+  if (cat === 'chanteurs') return 'Chanteurs/Chanteuses';
+  if (cat === 'mode') return 'Mode';
+  return cat.split(/[-\s]+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+}
+
+function buildArtisteFilterButtons(selectedCat = 'tous') {
+  const bar = document.getElementById('artistes-filter-bar');
+  if (!bar) return;
+
+  const categories = new Map();
+  categories.set('tous', 'Tous');
+
+  currentArtistes.forEach(a => {
+    const cat = getArtisteCategory(a);
+    if (!categories.has(cat)) categories.set(cat, formatCategoryLabel(cat));
+  });
+
+  const ordered = Array.from(categories.entries()).sort((a, b) => {
+    if (a[0] === 'tous') return -1;
+    if (b[0] === 'tous') return 1;
+    if (a[0] === 'chanteurs') return b[0] === 'chanteurs' ? 0 : -1;
+    if (a[0] === 'mode') return b[0] === 'mode' ? 0 : -1;
+    if (b[0] === 'chanteurs' || b[0] === 'mode') return 1;
+    return a[1].localeCompare(b[1], 'fr', { sensitivity: 'base' });
+  });
+
+  bar.innerHTML = ordered.map(([key, label]) => `
+    <button class="filter-btn${key === selectedCat ? ' active' : ''}" role="tab" onclick="filterArtistes('${key}', this)">${label}</button>
+  `).join('');
+}
+
+export function filterArtistes(cat, btn) {
+  if (!currentArtistes.length) return;
+  currentArtisteCat = cat;
+  document.querySelectorAll('#artistes-filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const filtered = currentArtistes.filter(a => cat === 'tous' || getArtisteCategory(a) === cat);
+  renderArtistesGrid(filtered, false);
+}
+
 export async function loadArtistes() {
   const grid = document.getElementById('artistes-grid');
   if (!grid) return;
   grid.innerHTML = '<p style="text-align:center; color:var(--muted); padding:40px 0;">Chargement...</p>';
-  const all = await fetchAllArtistes();
-  renderArtistesGrid(all, false);
+  currentArtistes = await fetchAllArtistes();
+  currentArtisteCat = 'tous';
+  buildArtisteFilterButtons(currentArtisteCat);
+  renderArtistesGrid(currentArtistes, false);
 }
 
 // Panel admin — avec bouton supprimer
