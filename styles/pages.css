@@ -220,6 +220,7 @@
   .cotisations-grid { grid-template-columns: 1fr; }
   .valeurs-grid { grid-template-columns: repeat(2,1fr); }
   .partenaires-grid { grid-template-columns: repeat(2,1fr); }
+  .artistes-grid      { grid-template-columns: repeat(2,1fr); }
   .artistes-grid-home { grid-template-columns: 1fr; }
   .form-grid { grid-template-columns: 1fr; }
   .form-full { grid-column: span 1; }
