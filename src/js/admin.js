@@ -249,7 +249,7 @@ export function renderArtistesGrid(list, showDelete = false) {
     return;
   }
   grid.innerHTML = list.map(a => `
-    <div class="artiste-card reveal">
+    <div class="artiste-card reveal visible">
       <div class="artiste-img">
         <img src="${a.img}" alt="${escHtml(a.nom)}" loading="lazy"
              onerror="this.src='/logo.png'; this.style.opacity='0.4';">

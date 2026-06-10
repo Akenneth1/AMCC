@@ -98,14 +98,24 @@ document.addEventListener('DOMContentLoaded', () => {
     io.observe(counterSection);
   }
 
-  // Artistes accueil — masque la section si aucun artiste configuré
-  const section = document.getElementById('section-artistes-home');
+  // Artistes accueil — rend directement dans #artistes-grid-home
+  const section  = document.getElementById('section-artistes-home');
   const gridHome = document.getElementById('artistes-grid-home');
   if (artistes.length === 0) {
     if (section) section.style.display = 'none';
-  } else {
-    const preview = artistes.slice(0, 3);
-    if (gridHome) renderArtistesGrid(preview);
+  } else if (gridHome) {
+    gridHome.innerHTML = artistes.slice(0, 3).map(a => `
+      <div class="artiste-card reveal visible">
+        <div class="artiste-img">
+          <img src="${a.img}" alt="${a.nom}" loading="lazy" onerror="this.src='/logo.png';">
+          <div class="artiste-overlay"></div>
+        </div>
+        <div class="artiste-body">
+          <h3 class="artiste-name">${a.nom}</h3>
+          <p class="artiste-discipline">${a.discipline}</p>
+          <p class="artiste-bio">${a.bio}</p>
+        </div>
+      </div>`).join('');
   }
 
   // Initialise PayPal dès que le SDK est disponible (max 10s)
