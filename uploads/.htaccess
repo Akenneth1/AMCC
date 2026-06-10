@@ -1,0 +1,9 @@
+# Bloquer l'exécution PHP dans les uploads (sécurité)
+<FilesMatch "\.php$">
+    Deny from all
+</FilesMatch>
+
+# Autoriser uniquement les images
+<FilesMatch "\.(jpg|jpeg|png|webp|gif)$">
+    Allow from all
+</FilesMatch>
