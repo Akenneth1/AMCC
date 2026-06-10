@@ -9,7 +9,7 @@ import { renderEvents, renderExposants,
 import { submitAdhesion, submitContact } from './forms.js';
 import { adminLogin, adminLogout, adminRefresh, deleteMember,
          switchAdminTab, cmsAddArtiste, cmsUpdateHome, exportCSV,
-         renderArtistesGrid } from './admin.js';
+         renderArtistesGrid, deleteArtiste } from './admin.js';
 import { initPayPal }       from './paypal.js';
 import { filterGalerie, renderGalerie, renderGalerieHome } from './galerie.js';
 import { artistes, evenements } from '../config/data.js';
@@ -51,6 +51,7 @@ window.switchAdminTab    = switchAdminTab;
 window.cmsAddArtiste     = cmsAddArtiste;
 window.cmsUpdateHome     = cmsUpdateHome;
 window.exportCSV         = exportCSV;
+window.deleteArtiste     = deleteArtiste;
 
 // ── INIT ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {

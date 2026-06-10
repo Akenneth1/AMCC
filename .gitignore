@@ -4,6 +4,11 @@ node_modules/
 # Dossiers projets externes
 j/
 
+# Données serveur (créées sur OVH, pas à versionner)
+data/artistes.json
+uploads/artistes/*
+!uploads/artistes/.gitkeep
+
 # Build output
 dist/
 

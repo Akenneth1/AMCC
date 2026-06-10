@@ -1,21 +1,17 @@
 // ── ADMIN.JS — CMS · Login · Membres · Artistes ──────────────
 
-import { db, storage }   from '../config/firebase.js';
-import { artistes }      from '../config/data.js';
+import { db }         from '../config/firebase.js';
+import { artistes }   from '../config/data.js';
 import {
-  collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, serverTimestamp
+  collection, addDoc, getDocs, deleteDoc, doc, query, orderBy
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-import { ref, uploadBytes, getDownloadURL }
-  from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
 
-// En production (Hostinger), le proxy PHP masque la vraie URL SheetDB.
-// En développement local (vite dev), on pointe directement sur SheetDB.
-const SHEETDB_URL = import.meta.env?.VITE_SHEETDB_URL
-  || (location.hostname === 'localhost' || location.hostname === '127.0.0.1'
-      ? 'https://sheetdb.io/api/v1/yf325l4woltxi'
-      : './api/sheetdb.php');
-const ADMIN_EMAIL  = import.meta.env?.VITE_ADMIN_EMAIL  || 'artmodeculture@gmail.com';
-const ADMIN_HASH   = import.meta.env?.VITE_ADMIN_HASH   || '43151764bcdfc907da60f13d47fc166768829be22a13bacbc51c46256f61a78b';
+// URL de l'API PHP artistes (même domaine OVH)
+const API_ARTISTES = './api/artistes.php';
+
+const SHEETDB_URL = import.meta.env?.VITE_SHEETDB_URL || 'https://sheetdb.io/api/v1/yf325l4woltxi';
+const ADMIN_EMAIL = import.meta.env?.VITE_ADMIN_EMAIL  || 'artmodeculture@gmail.com';
+const ADMIN_HASH  = import.meta.env?.VITE_ADMIN_HASH   || '43151764bcdfc907da60f13d47fc166768829be22a13bacbc51c46256f61a78b';
 
 function isFirebaseReady() {
   return import.meta.env?.VITE_FIREBASE_API_KEY &&
@@ -54,6 +50,7 @@ export async function adminLogin() {
 
 export function adminLogout() {
   sessionStorage.removeItem('amc_admin_session');
+  sessionStorage.removeItem('amc_admin_ts');
   window.navigate?.('accueil');
 }
 
@@ -133,48 +130,81 @@ export function cmsUpdateHome() {
   alert('Accueil mis à jour (Rafraîchir pour voir les changements).');
 }
 
-// ── ARTISTES ──────────────────────────────────────────────────
+// ── ARTISTES (API PHP OVH) ────────────────────────────────────
 export async function cmsAddArtiste() {
-  const name = document.getElementById('cms-art-name')?.value;
-  const job  = document.getElementById('cms-art-job')?.value;
-  const bio  = document.getElementById('cms-art-bio')?.value;
+  const name = document.getElementById('cms-art-name')?.value?.trim();
+  const job  = document.getElementById('cms-art-job')?.value?.trim();
+  const bio  = document.getElementById('cms-art-bio')?.value?.trim();
   const file = document.getElementById('cms-art-img')?.files[0];
   if (!name || !job) return alert('Nom et Discipline requis.');
 
   const btn = document.querySelector('#tab-artistes .btn-primary');
-  const originalText = btn.textContent;
-  btn.textContent = 'Envoi...';
-  btn.disabled = true;
+  const originalText = btn?.textContent;
+  if (btn) { btn.textContent = 'Envoi...'; btn.disabled = true; }
 
   try {
-    let url = './logo.png';
-    if (file) {
-      const sRef = ref(storage, `artistes/${Date.now()}_${file.name}`);
-      const snap = await uploadBytes(sRef, file);
-      url = await getDownloadURL(snap.ref);
-    }
-    await addDoc(collection(db, 'artistes'), { 
-      name, job, bio, imageUrl: url, createdAt: serverTimestamp() 
+    const form = new FormData();
+    form.append('nom', name);
+    form.append('discipline', job);
+    form.append('bio', bio || '');
+    if (file) form.append('image', file);
+
+    const res = await fetch(API_ARTISTES, {
+      method: 'POST',
+      headers: { 'X-Admin-Token': ADMIN_HASH },
+      body: form
     });
-    alert('Artiste ajouté !');
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || `Erreur serveur ${res.status}`);
+    }
+
+    alert('Artiste ajouté avec succès !');
     document.getElementById('cms-art-name').value = '';
-    document.getElementById('cms-art-job').value = '';
-    document.getElementById('cms-art-bio').value = '';
+    document.getElementById('cms-art-job').value  = '';
+    document.getElementById('cms-art-bio').value  = '';
+    if (document.getElementById('cms-art-img')) document.getElementById('cms-art-img').value = '';
     loadArtistes();
-  } catch (err) { 
+  } catch (err) {
     console.error(err);
-    alert('Erreur Firebase.'); 
+    alert('Erreur : ' + err.message);
   } finally {
-    btn.textContent = originalText;
-    btn.disabled = false;
+    if (btn) { btn.textContent = originalText; btn.disabled = false; }
   }
 }
 
-export function loadArtistes() {
-  renderArtistesGrid(artistes);
+export async function deleteArtiste(id) {
+  if (!confirm('Supprimer cet artiste ?')) return;
+  try {
+    const res = await fetch(`${API_ARTISTES}?id=${encodeURIComponent(id)}`, {
+      method: 'DELETE',
+      headers: { 'X-Admin-Token': ADMIN_HASH }
+    });
+    if (!res.ok) throw new Error('Erreur serveur');
+    loadArtistes();
+  } catch (err) { alert('Erreur suppression : ' + err.message); }
 }
 
-export function renderArtistesGrid(list) {
+export async function loadArtistes() {
+  const grid = document.getElementById('artistes-grid');
+  if (!grid) return;
+  grid.innerHTML = '<p style="text-align:center; color:var(--muted); padding:40px 0;">Chargement...</p>';
+  try {
+    const res  = await fetch(API_ARTISTES);
+    const dynamic = res.ok ? await res.json() : [];
+    // Fusion : artistes data.js + artistes ajoutés via CMS
+    const all = [
+      ...artistes,
+      ...dynamic.filter(d => !artistes.find(s => s.nom === d.nom))
+    ];
+    renderArtistesGrid(all, true);
+  } catch {
+    renderArtistesGrid(artistes, false);
+  }
+}
+
+export function renderArtistesGrid(list, showDelete = false) {
   const grid = document.getElementById('artistes-grid');
   if (!grid) return;
   if (!list || list.length === 0) {
@@ -185,13 +215,16 @@ export function renderArtistesGrid(list) {
     <div class="artiste-card reveal">
       <div class="artiste-img">
         <img src="${a.img}" alt="${escHtml(a.nom)}" loading="lazy"
-             onerror="this.src='./logo.png'; this.style.opacity='0.4';">
+             onerror="this.src='/logo.png'; this.style.opacity='0.4';">
         <div class="artiste-overlay"></div>
       </div>
       <div class="artiste-body">
         <h3 class="artiste-name">${escHtml(a.nom)}</h3>
         <p class="artiste-discipline">${escHtml(a.discipline)}</p>
         <p class="artiste-bio">${escHtml(a.bio)}</p>
+        ${showDelete && a.id ? `<button onclick="deleteArtiste('${escHtml(a.id)}')"
+          style="margin-top:12px;background:none;border:1px solid #e55;color:#e55;padding:6px 14px;cursor:pointer;font-size:0.75rem;">
+          Supprimer</button>` : ''}
       </div>
     </div>`).join('');
 }
