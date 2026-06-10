@@ -4,6 +4,12 @@ node_modules/
 # Dossiers projets externes
 j/
 
+# Fichiers Office temporaires
+*.docx
+*.xlsx
+*.pptx
+~$*
+
 # Données serveur (créées sur OVH, pas à versionner)
 data/artistes.json
 uploads/artistes/*
