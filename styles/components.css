@@ -253,6 +253,7 @@ section { padding: 100px 0; }
 }
 
 /* ── ARTISTES ── */
+.artistes-grid      { display: grid; grid-template-columns: repeat(4,1fr); gap: 28px; margin-top: 40px; }
 .artistes-grid-home { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 56px; }
 .artiste-card { background: var(--black-soft); border: 1px solid rgba(200,169,107,0.08); overflow: hidden; transition: all .4s; }
 .artiste-card:hover { border-color: rgba(200,169,107,0.3); transform: translateY(-4px); }
