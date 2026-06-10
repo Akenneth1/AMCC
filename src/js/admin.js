@@ -9,7 +9,10 @@ import {
 // URL de l'API PHP artistes (même domaine OVH)
 const API_ARTISTES = './api/artistes.php';
 
-const SHEETDB_URL = import.meta.env?.VITE_SHEETDB_URL || 'https://sheetdb.io/api/v1/yf325l4woltxi';
+const SHEETDB_URL = import.meta.env?.VITE_SHEETDB_URL
+  || (location.hostname === 'localhost' || location.hostname === '127.0.0.1'
+      ? 'https://sheetdb.io/api/v1/yf325l4woltxi'
+      : './api/sheetdb.php');
 const ADMIN_EMAIL = import.meta.env?.VITE_ADMIN_EMAIL  || 'artmodeculture@gmail.com';
 const ADMIN_HASH  = import.meta.env?.VITE_ADMIN_HASH   || '43151764bcdfc907da60f13d47fc166768829be22a13bacbc51c46256f61a78b';
 
@@ -97,7 +100,10 @@ export async function deleteMember(id) {
     if (isFirebaseReady()) {
       await deleteDoc(doc(db, 'adherents', id));
     } else {
-      await fetch(`${SHEETDB_URL}/email/${encodeURIComponent(id)}`, { method: 'DELETE' });
+      const delUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+        ? `${SHEETDB_URL}/email/${encodeURIComponent(id)}`
+        : `${SHEETDB_URL}?path=email/${encodeURIComponent(id)}`;
+      await fetch(delUrl, { method: 'DELETE' });
     }
     adminRefresh();
   } catch { alert('Erreur.'); }
@@ -111,7 +117,7 @@ export function switchAdminTab(tabId, btn) {
   btn?.classList.add('active');
   
   if (tabId === 'members')  adminRefresh();
-  if (tabId === 'artistes') loadArtistes();
+  if (tabId === 'artistes') loadArtistesAdmin();
   if (tabId === 'home')     loadHomeCMS();
 }
 
@@ -165,7 +171,7 @@ export async function cmsAddArtiste() {
     document.getElementById('cms-art-job').value  = '';
     document.getElementById('cms-art-bio').value  = '';
     if (document.getElementById('cms-art-img')) document.getElementById('cms-art-img').value = '';
-    loadArtistes();
+    loadArtistesAdmin();
   } catch (err) {
     console.error(err);
     alert('Erreur : ' + err.message);
@@ -182,26 +188,57 @@ export async function deleteArtiste(id) {
       headers: { 'X-Admin-Token': ADMIN_HASH }
     });
     if (!res.ok) throw new Error('Erreur serveur');
-    loadArtistes();
+    loadArtistesAdmin();
   } catch (err) { alert('Erreur suppression : ' + err.message); }
 }
 
+// Récupère la liste fusionnée (data.js + PHP API)
+async function fetchAllArtistes() {
+  try {
+    const res     = await fetch(API_ARTISTES);
+    const dynamic = res.ok ? await res.json() : [];
+    return [
+      ...artistes,
+      ...dynamic.filter(d => !artistes.find(s => s.nom === d.nom))
+    ];
+  } catch {
+    return [...artistes];
+  }
+}
+
+// Page publique partenaires — sans bouton supprimer
 export async function loadArtistes() {
   const grid = document.getElementById('artistes-grid');
   if (!grid) return;
   grid.innerHTML = '<p style="text-align:center; color:var(--muted); padding:40px 0;">Chargement...</p>';
-  try {
-    const res  = await fetch(API_ARTISTES);
-    const dynamic = res.ok ? await res.json() : [];
-    // Fusion : artistes data.js + artistes ajoutés via CMS
-    const all = [
-      ...artistes,
-      ...dynamic.filter(d => !artistes.find(s => s.nom === d.nom))
-    ];
-    renderArtistesGrid(all, true);
-  } catch {
-    renderArtistesGrid(artistes, false);
+  const all = await fetchAllArtistes();
+  renderArtistesGrid(all, false);
+}
+
+// Panel admin — avec bouton supprimer
+export async function loadArtistesAdmin() {
+  const list = document.getElementById('cms-artistes-list');
+  if (!list) return;
+  list.innerHTML = '<p style="text-align:center; color:var(--muted); padding:20px 0;">Chargement...</p>';
+  const all = await fetchAllArtistes();
+  if (all.length === 0) {
+    list.innerHTML = '<p style="text-align:center; color:var(--muted);">Aucun artiste enregistré.</p>';
+    return;
   }
+  list.innerHTML = `
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:16px; margin-top:16px;">
+      ${all.map(a => `
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(200,169,107,0.15); padding:16px;">
+          <img src="${a.img}" alt="${escHtml(a.nom)}"
+               style="width:100%; height:140px; object-fit:cover; margin-bottom:10px;"
+               onerror="this.src='/logo.png'; this.style.opacity='0.4';">
+          <p style="font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--gold); margin:0 0 4px;">${escHtml(a.nom)}</p>
+          <p style="font-size:0.72rem; color:var(--muted); margin:0 0 10px;">${escHtml(a.discipline)}</p>
+          ${a.id ? `<button onclick="deleteArtiste('${escHtml(a.id)}')"
+            style="width:100%;background:none;border:1px solid #e55;color:#e55;padding:6px;cursor:pointer;font-size:0.72rem;">
+            Supprimer</button>` : '<p style="font-size:0.68rem;color:var(--muted);">Artiste statique</p>'}
+        </div>`).join('')}
+    </div>`;
 }
 
 export function renderArtistesGrid(list, showDelete = false) {
