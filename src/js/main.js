@@ -21,6 +21,50 @@ function filterEvents(cat, btn) {
   if (typeof renderEvents === 'function') renderEvents(cat);
 }
 
+function getArtisteCategory(artiste) {
+  if (artiste.cat) return artiste.cat;
+  const discipline = String(artiste.discipline || '').toLowerCase();
+  if (/\b(chanteur|chanteuse|chant|musicien|interpr[eè]te|afropop|afro-soul|bikutsi|lyrique)\b/.test(discipline)) return 'chanteurs';
+  if (/\b(mode|styliste|fashion|designer|créateur|créatrice)\b/.test(discipline)) return 'mode';
+  return 'autres';
+}
+
+function renderArtistes(cat = 'tous') {
+  const grid = document.getElementById('artistes-grid');
+  if (!grid) return;
+
+  const filtered = artistes.filter(a => {
+    if (cat === 'tous') return true;
+    return getArtisteCategory(a) === cat;
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:40px;">Aucun artiste dans cette catégorie pour le moment.</p>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(a => `
+    <div class="artiste-card reveal visible">
+      <div class="artiste-img">
+        <img src="${a.img}" alt="${a.nom}" loading="lazy" onerror="this.src='./logo.png';">
+        <div class="artiste-overlay"></div>
+      </div>
+      <div class="artiste-body">
+        <h3 class="artiste-name">${a.nom}</h3>
+        <p class="artiste-discipline">${a.discipline}</p>
+        <p class="artiste-bio">${a.bio}</p>
+      </div>
+    </div>`).join('');
+
+  setTimeout(observeReveal, 100);
+}
+
+function filterArtistes(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderArtistes(cat);
+}
+
 // ── MONTANT DON ───────────────────────────────────────────────
 window.selectedMontant = 50;
 function selectMontant(btn, val) {
@@ -40,6 +84,7 @@ window.openFestivalModal = openFestivalModal;
 window.closeFestivalModal= closeFestivalModal;
 window.filterGalerie     = filterGalerie;
 window.filterEvents      = filterEvents;
+window.filterArtistes    = filterArtistes;
 window.selectMontant     = selectMontant;
 window.submitAdhesion    = submitAdhesion;
 window.submitContact     = submitContact;
@@ -117,6 +162,9 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </div>`).join('');
   }
+
+  const artistesGrid = document.getElementById('artistes-grid');
+  if (artistesGrid) renderArtistes('tous');
 
   // Initialise PayPal dès que le SDK est disponible (max 10s)
   let paypalAttempts = 0;
