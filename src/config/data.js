@@ -15,7 +15,7 @@ export const evenements = [
   },
   {
     id: 'concert-mars-2026',
-    annee: '2026', tag: 'avenir',
+    annee: '2026', tag: '2026',
     titre: 'Concert "Unis contre les discriminations"',
     date: '21 MARS 2026 · LE MANDÉ, LILLE',
     desc: 'Concert engagé autour de la lutte contre les discriminations. Une soirée musicale portant un message fort pour le vivre-ensemble.',
