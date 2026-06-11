@@ -124,17 +124,43 @@ export function startCounters() {
 export function openLightbox(el) {
   const lb  = document.getElementById('lightbox');
   const img = document.getElementById('lightboxImg');
+  const video = document.getElementById('lightboxVideo');
   const cap = document.getElementById('lightboxCaption');
-  if (!lb || !img) return;
-  const src = el.tagName === 'IMG' ? el : el.querySelector('img');
-  img.src = src.src;
-  if (cap) cap.textContent = src.alt;
+  if (!lb || !img || !video) return;
+
+  const type   = el.dataset.type || 'image';
+  const src    = el.dataset.src || el.querySelector('img')?.src || '';
+  const poster = el.dataset.poster || '';
+  const alt    = el.dataset.alt || el.querySelector('img')?.alt || '';
+
+  if (type === 'video') {
+    img.style.display = 'none';
+    video.style.display = 'block';
+    video.src = src;
+    video.poster = poster;
+    video.load();
+    video.play().catch(() => {});
+  } else {
+    video.pause();
+    video.currentTime = 0;
+    video.style.display = 'none';
+    img.style.display = 'block';
+    img.src = src;
+  }
+
+  if (cap) cap.textContent = alt;
   lb.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 }
 
 export function closeLightbox() {
   const lb = document.getElementById('lightbox');
+  const video = document.getElementById('lightboxVideo');
+  if (video) {
+    video.pause();
+    video.currentTime = 0;
+    video.src = '';
+  }
   if (lb) lb.style.display = 'none';
   document.body.style.overflow = '';
 }

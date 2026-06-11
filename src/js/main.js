@@ -8,11 +8,11 @@ import { renderEvents, renderExposants,
          initFestivalCountdown, openFestivalModal, closeFestivalModal } from './ui.js';
 import { submitAdhesion, submitContact } from './forms.js';
 import { adminLogin, adminLogout, adminRefresh, deleteMember,
-         switchAdminTab, cmsAddArtiste, cmsUpdateHome, exportCSV,
-         renderArtistesGrid, deleteArtiste, loadArtistesAdmin,
+         switchAdminTab, cmsAddArtiste, cmsAddGalerieItem, cmsUpdateHome, exportCSV,
+         renderArtistesGrid, deleteArtiste, deleteGalerieItem, loadArtistesAdmin,
          loadArtistes, filterArtistes } from './admin.js';
 import { initPayPal }       from './paypal.js';
-import { filterGalerie, renderGalerie, renderGalerieHome } from './galerie.js';
+import { filterGalerie, renderGalerie, renderGalerieHome, initGalerie } from './galerie.js';
 import { artistes, evenements } from '../config/data.js';
 
 // ── FILTRAGE ÉVÉNEMENTS ───────────────────────────────────────
@@ -89,9 +89,11 @@ window.adminRefresh      = adminRefresh;
 window.deleteMember      = deleteMember;
 window.switchAdminTab    = switchAdminTab;
 window.cmsAddArtiste     = cmsAddArtiste;
+window.cmsAddGalerieItem = cmsAddGalerieItem;
 window.cmsUpdateHome     = cmsUpdateHome;
 window.exportCSV         = exportCSV;
 window.deleteArtiste     = deleteArtiste;
+window.deleteGalerieItem= deleteGalerieItem;
 window.loadArtistesAdmin = loadArtistesAdmin;
 
 // ── INIT ──────────────────────────────────────────────────────
@@ -104,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initLogo3D();
   observeReveal();
   renderGalerieHome();
+  initGalerie();
   initFestivalCountdown();
 
   // Événements accueil — 3 premiers depuis data.js (synchro automatique)

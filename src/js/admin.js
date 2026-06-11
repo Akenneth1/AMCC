@@ -8,6 +8,7 @@ import {
 
 // URL de l'API PHP artistes (même domaine OVH)
 const API_ARTISTES = './api/artistes.php';
+const API_GALERIE  = './api/galerie.php';
 
 const SHEETDB_URL = import.meta.env?.VITE_SHEETDB_URL
   || (location.hostname === 'localhost' || location.hostname === '127.0.0.1'
@@ -118,6 +119,7 @@ export function switchAdminTab(tabId, btn) {
   
   if (tabId === 'members')  adminRefresh();
   if (tabId === 'artistes') loadArtistesAdmin();
+  if (tabId === 'galerie')  loadGalerieAdmin();
   if (tabId === 'home')     loadHomeCMS();
 }
 
@@ -192,7 +194,61 @@ export async function deleteArtiste(id) {
   } catch (err) { alert('Erreur suppression : ' + err.message); }
 }
 
-// Récupère la liste fusionnée (data.js + PHP API)
+export async function cmsAddGalerieItem() {
+  const file = document.getElementById('cms-gal-img')?.files[0];
+  const posterFile = document.getElementById('cms-gal-poster')?.files[0];
+  const alt  = document.getElementById('cms-gal-alt')?.value?.trim() || '';
+  const cat  = document.getElementById('cms-gal-cat')?.value || 'public';
+  if (!file) return alert('Choisissez un fichier image ou vidéo pour la galerie.');
+
+  const btn = document.querySelector('#tab-galerie .btn-primary');
+  const originalText = btn?.textContent;
+  if (btn) { btn.textContent = 'Upload...'; btn.disabled = true; }
+
+  try {
+    const form = new FormData();
+    form.append('media', file);
+    if (posterFile) form.append('poster', posterFile);
+    form.append('categorie', cat);
+    form.append('alt', alt);
+
+    const res = await fetch(API_GALERIE, {
+      method: 'POST',
+      headers: { 'X-Admin-Token': ADMIN_HASH },
+      body: form
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || `Erreur serveur ${res.status}`);
+    }
+
+    alert('Élément ajouté à la galerie !');
+    document.getElementById('cms-gal-img').value = '';
+    document.getElementById('cms-gal-poster').value = '';
+    document.getElementById('cms-gal-alt').value = '';
+    document.getElementById('cms-gal-cat').value = 'public';
+    loadGalerieAdmin();
+  } catch (err) {
+    console.error(err);
+    alert('Erreur : ' + err.message);
+  } finally {
+    if (btn) { btn.textContent = originalText; btn.disabled = false; }
+  }
+}
+
+export async function deleteGalerieItem(id) {
+  if (!confirm('Supprimer cet élément de la galerie ?')) return;
+  try {
+    const res = await fetch(`${API_GALERIE}?id=${encodeURIComponent(id)}`, {
+      method: 'DELETE',
+      headers: { 'X-Admin-Token': ADMIN_HASH }
+    });
+    if (!res.ok) throw new Error('Erreur serveur');
+    loadGalerieAdmin();
+  } catch (err) { alert('Erreur suppression : ' + err.message); }
+}
+
 async function fetchAllArtistes() {
   try {
     const res     = await fetch(API_ARTISTES);
@@ -285,7 +341,6 @@ export async function loadArtistes() {
   renderArtistesGrid(currentArtistes, false);
 }
 
-// Panel admin — avec bouton supprimer
 export async function loadArtistesAdmin() {
   const list = document.getElementById('cms-artistes-list');
   if (!list) return;
@@ -309,6 +364,47 @@ export async function loadArtistesAdmin() {
             Supprimer</button>` : '<p style="font-size:0.68rem;color:var(--muted);">Artiste statique</p>'}
         </div>`).join('')}
     </div>`;
+}
+
+// Panel admin — avec bouton supprimer
+export async function loadGalerieAdmin() {
+  const list = document.getElementById('cms-galerie-list');
+  if (!list) return;
+  list.innerHTML = '<p style="text-align:center; color:var(--muted); padding:20px 0;">Chargement...</p>';
+  const all = await fetchAllGalerieItems();
+  if (all.length === 0) {
+    list.innerHTML = '<p style="text-align:center; color:var(--muted);">Aucun élément de galerie enregistré.</p>';
+    return;
+  }
+  list.innerHTML = `
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:16px; margin-top:16px;">
+      ${all.map(a => {
+        const preview = (a.type === 'video' ? (a.poster || '/logo.png') : a.src) || '/logo.png';
+        const badge = a.type === 'video' ? '<span style="position:absolute; top:12px; left:12px; background:rgba(0,0,0,0.7); color:#fff; padding:4px 8px; border-radius:999px; font-size:0.7rem;">Vidéo</span>' : '';
+        return `
+        <div style="position:relative; background:rgba(255,255,255,0.03); border:1px solid rgba(200,169,107,0.15); padding:16px;">
+          ${badge}
+          <img src="${preview}" alt="${escHtml(a.alt)}"
+               style="width:100%; height:140px; object-fit:cover; margin-bottom:10px;"
+               onerror="this.src='/logo.png'; this.style.opacity='0.4';">
+          <p style="font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--gold); margin:0 0 4px;">${escHtml(a.categorie)}</p>
+          <p style="font-size:0.72rem; color:var(--muted); margin:0 0 10px;">${escHtml(a.alt)}</p>
+          ${a.id ? `<button onclick="deleteGalerieItem('${escHtml(a.id)}')"
+            style="width:100%;background:none;border:1px solid #e55;color:#e55;padding:6px;cursor:pointer;font-size:0.72rem;">
+            Supprimer</button>` : ''}
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+
+async function fetchAllGalerieItems() {
+  try {
+    const res = await fetch(API_GALERIE);
+    if (!res.ok) return [];
+    return await res.json();
+  } catch {
+    return [];
+  }
 }
 
 export function renderArtistesGrid(list, showDelete = false) {

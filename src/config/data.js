@@ -88,6 +88,7 @@ export const evenements = [
 ];
 
 // ── IMAGES GALERIE ────────────────────────────────────────────
+// Pour ajouter une vidéo : utiliser type:'video', src:'./galerie/...mp4', poster:'./galerie/...jpg' et alt:'Description'.
 export const galerieImages = [
   // Backstages
   { src: './galerie/Backstages/482205438_618966764334404_7375711029498316382_n.jpg', cat: 'backstages', alt: 'Backstage 1' },

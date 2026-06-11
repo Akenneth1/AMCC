@@ -9,6 +9,7 @@ $dirs = [
     __DIR__ . '/data',
     __DIR__ . '/uploads',
     __DIR__ . '/uploads/artistes',
+    __DIR__ . '/uploads/galerie',
 ];
 
 $results = [];
@@ -26,19 +27,25 @@ foreach ($dirs as $dir) {
     }
 }
 
-// Créer artistes.json vide si absent
-$json = __DIR__ . '/data/artistes.json';
-if (!file_exists($json)) {
-    file_put_contents($json, '[]');
-    $results[] = "✅ Créé : data/artistes.json";
-} else {
-    $results[] = "✅ Existe déjà : data/artistes.json";
+// Créer fichiers JSON vides si absents
+$jsonFiles = [
+    __DIR__ . '/data/artistes.json',
+    __DIR__ . '/data/galerie.json',
+];
+foreach ($jsonFiles as $json) {
+    if (!file_exists($json)) {
+        file_put_contents($json, '[]');
+        $results[] = "✅ Créé : " . basename($json);
+    } else {
+        $results[] = "✅ Existe déjà : " . basename($json);
+    }
 }
 
 // Vérifications d'écriture
 $writeTests = [
     __DIR__ . '/data'             => is_writable(__DIR__ . '/data'),
     __DIR__ . '/uploads/artistes' => is_writable(__DIR__ . '/uploads/artistes'),
+    __DIR__ . '/uploads/galerie'  => is_writable(__DIR__ . '/uploads/galerie'),
 ];
 
 ?>
