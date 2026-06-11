@@ -13,11 +13,11 @@
 
   <!-- Chemins relatifs pour assurer la compatibilité GitHub Pages -->
 
-  <script src="https://www.paypal.com/sdk/js?client-id=AdVtmqPF1A6bfkb9giIKMMTY9o4lQPhnYDKs_lnbFgLQFzOn0_Xx5M6fKK2tAufN2r92xPX9aHuA4R7M&currency=EUR" defer></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=AZmNSx-dVrRDwbqS2_8PQRDD9j9JG1zCcel2pyS6iFrYhML_PNgQsKzBwFlP4f35A4swf8SDBIhO0dTW&currency=EUR" defer></script>
   <link rel="icon" type="image/x-icon" href="./assets/favicon-CC0XJLKT.ico?v=1">
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon_32x32-BKo2pXNg.png">
   <link rel="apple-touch-icon" href="./assets/apple-touch-icon-CU62Hxil.png">
-  <script type="module" crossorigin src="./assets/main-DxYr7weK.js"></script>
+  <script type="module" crossorigin src="./assets/main-WLdLiCX6.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/main-x7JJn59t.css">
 </head>
 <body>
@@ -627,6 +627,9 @@
       <button class="montant-btn active" onclick="selectMontant(this, 50)">50 €</button>
       <button class="montant-btn" onclick="selectMontant(this, 100)">100 €</button>
       <button class="montant-btn" onclick="selectMontant(this, 250)">250 €</button>
+      <div class="montant-custom">
+        <input id="customMontant" type="number" min="1" step="1" placeholder="Montant libre" oninput="selectMontant(null, this.value)" />
+      </div>
     </div>
     <div id="paypal-button-container-don"></div>
   </div>
