@@ -11,8 +11,9 @@ export function initPayPal() {
     window.paypal.Buttons({
       style: { shape: 'rect', color: 'gold', layout: 'vertical' },
       createOrder: (data, actions) => {
-        const val = document.getElementById('customMontant')?.value
-          || window.selectedMontant || 50;
+        const raw = document.getElementById('customMontant')?.value;
+        const custom = parseFloat(raw);
+        const val = Number.isFinite(custom) && custom > 0 ? custom.toFixed(2) : (Number(window.selectedMontant) || 50).toFixed(2);
         return actions.order.create({
           purchase_units: [{ amount: { currency_code: 'EUR', value: val.toString() } }]
         });

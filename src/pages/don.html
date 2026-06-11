@@ -13,6 +13,9 @@
       <button class="montant-btn active" onclick="selectMontant(this, 50)">50 €</button>
       <button class="montant-btn" onclick="selectMontant(this, 100)">100 €</button>
       <button class="montant-btn" onclick="selectMontant(this, 250)">250 €</button>
+      <div class="montant-custom">
+        <input id="customMontant" type="number" min="1" step="1" placeholder="Montant libre" oninput="selectMontant(null, this.value)" />
+      </div>
     </div>
     <div id="paypal-button-container-don"></div>
   </div>
