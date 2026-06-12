@@ -37,7 +37,10 @@
 
         <!-- Membres -->
         <div id="tab-members" class="admin-cms-tab">
-          <p class="section-label">Gestion des Adhérents</p>
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px;">
+            <p class="section-label" style="margin:0;">Gestion des Adhérents</p>
+            <button class="btn-outline" onclick="exportCSV()">Exporter Excel</button>
+          </div>
           <div class="admin-table-wrap" style="margin-top:20px;">
             <table id="adminTable">
               <thead>

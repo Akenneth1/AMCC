@@ -2,8 +2,8 @@
 
 import { db }         from '../config/firebase.js';
 import { artistes }   from '../config/data.js';
-import {
-  collection, addDoc, getDocs, deleteDoc, doc, query, orderBy
+import * as XLSX from 'xlsx';
+import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
 // URL de l'API PHP artistes (même domaine OVH)
@@ -34,6 +34,24 @@ function escHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
+}
+
+function normalizeMember(item) {
+  if (!item || typeof item !== 'object') return {};
+  return {
+    id: item.id || item._id || item.email || item.Email || '',
+    nom: item.nom || item.Nom || '',
+    email: item.email || item.Email || '',
+    tel: item.tel || item.telephone || item.Telephone || item['Téléphone'] || '',
+    ville: item.ville || item.Ville || '',
+    dateNaissance: item.dateNaissance || item['Date de naissance'] || item['Date de naissance'] || item.date_naissance || '',
+    profil: item.profil || item.Profil || '',
+    paiement: item.paiement || item.Paiement || '',
+    statut: item.statut || item.Statut || '',
+    message: item.message || item.Message || '',
+    dateInscription: item.dateInscription || item['Date d\'inscription'] || item['Date d’inscription'] || item.date_inscription || '',
+    type: item.type || item.Type || ''
+  };
 }
 
 // ── LOGIN ─────────────────────────────────────────────────────
@@ -73,9 +91,11 @@ export async function adminRefresh() {
     } else {
       const res = await fetch(SHEETDB_URL);
       list = await res.json();
+      if (list && list.data) list = list.data;
       if (Array.isArray(list)) list = list.reverse();
     }
 
+    list = list.map(normalizeMember);
     const statEl = document.getElementById('admin-stat-total');
     if (statEl) statEl.textContent = list.length;
 
@@ -85,7 +105,7 @@ export async function adminRefresh() {
         <td>${escHtml(a.profil)}</td>
         <td><span class="admin-badge ${a.statut === 'En attente de paiement' ? 'pending' : 'active'}">${escHtml(a.statut)}</span></td>
         <td style="text-align:right;">
-          <button onclick="deleteMember('${escHtml(a.id || a.email)}')"
+          <button onclick='deleteMember(${JSON.stringify(a.id)})'
             style="background:none;border:none;color:#e55;cursor:pointer;font-size:1.2rem;">🗑️</button>
         </td>
       </tr>`).join('');
@@ -96,18 +116,40 @@ export async function adminRefresh() {
 }
 
 export async function deleteMember(id) {
+  if (!id) return alert('Impossible de supprimer : identifiant introuvable.');
   if (!confirm('Supprimer ce membre ?')) return;
+
+  const tryDelete = async (path) => {
+    const url = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+      ? `${SHEETDB_URL}/${path}`
+      : `${SHEETDB_URL}?path=${path}`;
+    const res = await fetch(url, { method: 'DELETE' });
+    return res.ok ? res : null;
+  };
+
   try {
     if (isFirebaseReady()) {
       await deleteDoc(doc(db, 'adherents', id));
     } else {
-      const delUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-        ? `${SHEETDB_URL}/email/${encodeURIComponent(id)}`
-        : `${SHEETDB_URL}?path=email/${encodeURIComponent(id)}`;
-      await fetch(delUrl, { method: 'DELETE' });
+      const encodedId = encodeURIComponent(id);
+      const paths = [`email/${encodedId}`, `Email/${encodedId}`];
+      let response = null;
+
+      for (const path of paths) {
+        response = await tryDelete(path);
+        if (response) break;
+      }
+
+      if (!response) {
+        throw new Error('Suppression impossible. Vérifiez le champ de tri du membre.');
+      }
     }
+
     adminRefresh();
-  } catch { alert('Erreur.'); }
+  } catch (err) {
+    console.error(err);
+    alert(err.message || 'Erreur de suppression.');
+  }
 }
 
 export function switchAdminTab(tabId, btn) {
@@ -432,8 +474,63 @@ export function renderArtistesGrid(list, showDelete = false) {
     </div>`).join('');
 }
 
-export function exportCSV() {
-  alert('Export CSV indisponible en mode démo.');
+export async function exportCSV() {
+  try {
+    let list = [];
+    if (isFirebaseReady()) {
+      const q = query(collection(db, 'adherents'), orderBy('createdAt', 'desc'));
+      const snap = await getDocs(q);
+      snap.forEach(d => list.push({ id: d.id, ...d.data() }));
+    } else {
+      const res = await fetch(SHEETDB_URL);
+      if (!res.ok) throw new Error('Impossible de récupérer les données.');
+      list = await res.json();
+      if (list && list.data) list = list.data;
+      if (!Array.isArray(list)) throw new Error('Format de données inattendu.');
+      list = list.reverse();
+    }
+
+    list = list.map(normalizeMember);
+    const rows = list.filter(item => item.profil || item.type === 'adhesion');
+    if (!rows.length) {
+      return alert('Aucun adhérent trouvé pour l\'export.');
+    }
+
+    const headers = [
+      'Nom', 'Email', 'Téléphone', 'Ville', 'Date de naissance', 'Profil',
+      'Paiement', 'Statut', 'Message', 'Date d\'inscription'
+    ];
+
+    const worksheetData = rows.map(item => ({
+      Nom: item.nom,
+      Email: item.email,
+      Téléphone: item.tel || item.telephone,
+      Ville: item.ville,
+      'Date de naissance': item.dateNaissance || item.date_naissance,
+      Profil: item.profil,
+      Paiement: item.paiement,
+      Statut: item.statut,
+      Message: item.message || item.motif || '',
+      'Date d\'inscription': item.dateInscription || item.date_inscription || ''
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(worksheetData, { header: headers });
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Adhérents');
+    const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'adherents_amc.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error(err);
+    alert('Erreur lors de l\'export. Vérifiez que SheetDB est accessible.');
+  }
 }
 
 

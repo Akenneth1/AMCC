@@ -6,6 +6,8 @@
     <p style="max-width:580px; margin:0 auto; color:var(--beige); font-size:0.95rem; line-height:1.9;">
       Artiste, créateur, bénévole ou simplement passionné de culture — votre place est dans notre communauté.
     </p>
+    <p style="max-width:580px; margin:24px auto 0; color:var(--beige); font-size:0.95rem; line-height:1.9;">
+      Remplissez le formulaire ci-dessous pour rejoindre AMC. Choisissez "Membre" si vous souhaitez adhérer avec cotisation annuelle, ou "Bénévole" / "Artiste" pour un accès gratuit. Si vous préférez payer votre adhésion en espèces, indiquez-le dans votre message.</p>
   </div>
 </section>
 
@@ -53,6 +55,7 @@
           <li>Newsletter exclusive membres</li>
         </ul>
         <button class="btn-primary" style="width:100%; margin-top:24px;" onclick="document.getElementById('adhesionForm').scrollIntoView({behavior:'smooth'})">Adhérer maintenant</button>
+        <p style="margin-top:16px; color:var(--beige); font-size:0.9rem; line-height:1.7;">Payer la cotisation en espèces est possible. Indiquez-le dans votre message, et nous vous contacterons pour convenir d’un rendez-vous.</p>
       </div>
     </div>
   </div>
@@ -67,9 +70,12 @@
     
     <div id="adhesionSuccess" style="display:none; text-align:center; padding:40px; border:1px solid var(--gold); border-radius:8px; margin-bottom:32px;">
       <div style="font-size:2.5rem; margin-bottom:16px;">✓</div>
-      <h3 style="color:var(--gold); margin-bottom:12px;">Demande envoyée avec succès !</h3>
-      <p style="color:var(--beige); margin-bottom:24px;">Pour finaliser votre adhésion (30€), veuillez procéder au règlement ci-dessous :</p>
-      <div id="paypal-button-container-adhesion" style="max-width:400px; margin:0 auto;"></div>
+      <h3 id="adhesionSuccessTitle" style="color:var(--gold); margin-bottom:12px;">Demande envoyée avec succès !</h3>
+      <p id="adhesionSuccessMessage" style="color:var(--beige); margin-bottom:24px;">Votre inscription a bien été enregistrée.</p>
+      <div id="adhesionPaymentInfo" style="max-width:400px; margin:0 auto;">
+        <div id="paypal-button-container-adhesion" style="display:none;"></div>
+        <p id="cash-payment-note" style="color:var(--beige); margin-top:16px; display:none; line-height:1.7;">Si vous choisissez de régler en espèces, précisez-le dans votre message. Nous vous contacterons ensuite pour fixer le rendez-vous.</p>
+      </div>
     </div>
 
     <form class="form-grid" id="adhesionForm" onsubmit="event.preventDefault(); submitAdhesion();">
@@ -99,6 +105,13 @@
           <option value="exposant">Exposant</option>
           <option value="partenaire">Partenaire</option>
           <option value="sponsor">Sponsor</option>
+        </select>
+      </div>
+      <div id="modePaiementGroup" class="form-group reveal" style="display:none;">
+        <label for="modePaiement">Mode de paiement (membre seulement)</label>
+        <select id="modePaiement">
+          <option value="paypal">En ligne</option>
+          <option value="especes">En espèces</option>
         </select>
       </div>
       <div class="form-group reveal">

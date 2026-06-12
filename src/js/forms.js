@@ -30,17 +30,22 @@ export async function submitContact() {
   if (btn) { btn.textContent = 'Envoi en cours...'; btn.disabled = true; }
 
   try {
-    await fetch(SHEETDB_URL, {
+    const res = await fetch(SHEETDB_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: {
-        date: new Date().toLocaleDateString('fr-FR'),
-        nom, email, message, type: 'contact'
-      }})
+      body: JSON.stringify({ data: [{
+        Nom: nom,
+        Email: email,
+        Message: message,
+        Type: 'contact',
+        'Date d\'inscription': new Date().toLocaleDateString('fr-FR')
+      }]})
     });
+    if (!res.ok) throw new Error(`Erreur ${res.status}`);
     document.getElementById('contact-form').style.display = 'none';
     document.getElementById('contact-success').style.display = 'block';
-  } catch {
+  } catch (err) {
+    console.error(err);
     alert("Erreur d'envoi. Veuillez réessayer ou nous contacter par email.");
   } finally {
     if (btn) { btn.textContent = originalText; btn.disabled = false; }
@@ -48,30 +53,35 @@ export async function submitContact() {
 }
 
 export async function submitAdhesion() {
-  const nom    = document.getElementById('nom')?.value?.trim();
-  const email  = document.getElementById('email')?.value?.trim();
-  const profil = document.getElementById('profil')?.value;
-  const tel    = document.getElementById('tel')?.value?.trim();
-  const ville  = document.getElementById('ville')?.value?.trim();
-  const dob    = document.getElementById('dateNaissance')?.value;
-  const msg    = document.getElementById('message')?.value?.trim();
-  const rgpd   = document.getElementById('rgpd')?.checked;
+  const nom           = document.getElementById('nom')?.value?.trim();
+  const email         = document.getElementById('email')?.value?.trim();
+  const profil        = document.getElementById('profil')?.value;
+  const modePaiement  = document.getElementById('modePaiement')?.value || 'paypal';
+  const tel           = document.getElementById('tel')?.value?.trim();
+  const ville         = document.getElementById('ville')?.value?.trim();
+  const dob           = document.getElementById('dateNaissance')?.value;
+  const msg           = document.getElementById('message')?.value?.trim();
+  const rgpd          = document.getElementById('rgpd')?.checked;
 
   if (!nom || !email || !profil || !rgpd) {
     alert('Merci de remplir tous les champs obligatoires.');
     return;
   }
 
+  const isPayingMember = profil === 'membre';
+  const isFreeProfile  = profil === 'benevole' || profil === 'artiste';
+
   const data = {
     dateInscription: new Date().toLocaleDateString('fr-FR'),
     createdAt: serverTimestamp ? serverTimestamp() : new Date(),
     nom, email,
-    tel:          tel   || '—',
-    ville:        ville || '—',
+    tel:           tel   || '—',
+    ville:         ville || '—',
     dateNaissance: dob  || '—',
     profil,
-    message: msg || 'Aucun message',
-    statut: 'En attente de paiement'
+    paiement:      isPayingMember ? modePaiement : 'gratuit',
+    message:       msg || 'Aucun message',
+    statut:        isPayingMember ? 'En attente de paiement' : 'Inscription gratuite'
   };
 
   const btn = document.querySelector('.form-submit .btn-primary');
@@ -79,21 +89,57 @@ export async function submitAdhesion() {
   if (btn) { btn.textContent = 'Envoi en cours...'; btn.disabled = true; }
 
   try {
+    const sheetRow = {
+      Nom: nom,
+      Email: email,
+      Téléphone: tel || '—',
+      Ville: ville || '—',
+      'Date de naissance': dob || '—',
+      Profil: profil,
+      Paiement: isPayingMember ? modePaiement : 'gratuit',
+      Statut: isPayingMember ? 'En attente de paiement' : 'Inscription gratuite',
+      Message: msg || 'Aucun message',
+      'Date d\'inscription': new Date().toLocaleDateString('fr-FR'),
+      Type: 'adhesion'
+    };
+
     if (isFirebaseReady()) {
       await addDoc(collection(db, 'adherents'), data);
-    } else {
-      await fetch(SHEETDB_URL, {
+      await fetch('./api/sendmail.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data })
+        body: JSON.stringify({ data: { ...data, type: 'adhesion' } })
       });
+    } else {
+      const res = await fetch(SHEETDB_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: [sheetRow] })
+      });
+      if (!res.ok) throw new Error(`Erreur ${res.status}`);
     }
 
     document.getElementById('adhesionForm').style.display  = 'none';
     document.getElementById('adhesionSuccess').style.display = 'block';
-    
-    // Initialisation immédiate du bouton PayPal spécifique
-    if (window.initPayPal) window.initPayPal();
+
+    const successMessage = document.getElementById('adhesionSuccessMessage');
+    const cashNote = document.getElementById('cash-payment-note');
+    const payPalContainer = document.getElementById('paypal-button-container-adhesion');
+
+    if (isPayingMember) {
+      successMessage.textContent = 'Votre demande est enregistrée. Pour finaliser votre adhésion de 30 €, procédez au paiement ci-dessous ou choisissez le règlement en espèces.';
+      if (cashNote) cashNote.style.display = 'block';
+      if (payPalContainer) payPalContainer.style.display = modePaiement === 'paypal' ? 'block' : 'none';
+      if (modePaiement === 'paypal' && window.initPayPal) window.initPayPal();
+    } else if (isFreeProfile) {
+      successMessage.textContent = `Votre inscription en tant que ${profil} est bien enregistrée. Vous rejoignez AMC gratuitement, nous vous contacterons bientôt.`;
+      if (cashNote) cashNote.style.display = 'none';
+      if (payPalContainer) payPalContainer.style.display = 'none';
+    } else {
+      successMessage.textContent = 'Votre demande est enregistrée. Nous vous contacterons bientôt pour la suite.';
+      if (cashNote) cashNote.style.display = 'none';
+      if (payPalContainer) payPalContainer.style.display = 'none';
+    }
 
   } catch (err) {
     console.error(err);

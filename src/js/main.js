@@ -164,6 +164,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const artistesGrid = document.getElementById('artistes-grid');
   if (artistesGrid) renderArtistes('tous');
 
+  const profilSelect = document.getElementById('profil');
+  const modePaiementGroup = document.getElementById('modePaiementGroup');
+  const updateModePaiementVisibility = () => {
+    if (!profilSelect || !modePaiementGroup) return;
+    modePaiementGroup.style.display = profilSelect.value === 'membre' ? 'block' : 'none';
+  };
+
+  if (profilSelect) {
+    profilSelect.addEventListener('change', updateModePaiementVisibility);
+    updateModePaiementVisibility();
+  }
+
   // Initialise PayPal dès que le SDK est disponible (max 10s)
   let paypalAttempts = 0;
   const paypalInterval = setInterval(() => {
