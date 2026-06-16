@@ -10,6 +10,7 @@
         <button class="admin-cms-btn" onclick="switchAdminTab('home', this)">Accueil</button>
         <button class="admin-cms-btn" onclick="switchAdminTab('members', this)">Adhérents</button>
         <button class="admin-cms-btn" onclick="switchAdminTab('artistes', this)">Artistes</button>
+        <button class="admin-cms-btn" onclick="switchAdminTab('partenaires', this)">Partenaires</button>
         <button class="admin-cms-btn" onclick="switchAdminTab('galerie', this)">Galerie</button>
       </aside>
       <main class="admin-cms-content" style="flex:1;">
@@ -64,6 +65,18 @@
             <button class="btn-primary" onclick="cmsAddArtiste()">Ajouter l'artiste</button>
           </div>
           <div id="cms-artistes-list"></div>
+        </div>
+
+        <!-- Partenaires -->
+        <div id="tab-partenaires" class="admin-cms-tab">
+          <p class="section-label">Logos partenaires</p>
+          <div class="cms-form" style="margin:20px 0 40px; max-width:500px;">
+            <div class="form-group"><label>Nom de l'entreprise</label><input type="text" id="cms-partner-name" placeholder="Ex: Entreprise partenaire" /></div>
+            <div class="form-group"><label>Lien du site (facultatif)</label><input type="url" id="cms-partner-url" placeholder="https://..." /></div>
+            <div class="form-group"><label>Logo</label><input type="file" id="cms-partner-logo" accept="image/*" /></div>
+            <button class="btn-primary" onclick="cmsAddPartenaireLogo()">Ajouter le logo</button>
+          </div>
+          <div id="cms-partenaires-list"></div>
         </div>
 
         <!-- Galerie -->

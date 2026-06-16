@@ -81,6 +81,11 @@
   display: flex; align-items: center; gap: 10px;
 }
 .cotisation-features li::before { content: '✓'; color: var(--gold); font-size: 0.75rem; }
+.adhesion-card-after-form {
+  margin-top: 72px;
+  padding-top: 56px;
+  border-top: 1px solid rgba(200,169,107,0.12);
+}
 
 /* ── FORMULAIRES ── */
 .form-section { background: var(--black-soft); }
@@ -220,6 +225,9 @@
   .cotisations-grid { grid-template-columns: 1fr; }
   .valeurs-grid { grid-template-columns: repeat(2,1fr); }
   .partenaires-grid { grid-template-columns: repeat(2,1fr); }
+  .partenaire-logo-card { min-width: 150px; height: 72px; padding: 12px 16px; }
+  .partenaire-logo-card img { max-width: 96px; max-height: 44px; }
+  .partenaire-logo-card span { max-width: 92px; font-size: 0.62rem; }
   .artistes-grid      { grid-template-columns: repeat(2,1fr); }
   .artistes-grid-home { grid-template-columns: 1fr; }
   .form-grid { grid-template-columns: 1fr; }

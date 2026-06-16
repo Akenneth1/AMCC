@@ -8,9 +8,10 @@ import { renderEvents, renderExposants,
          initFestivalCountdown, openFestivalModal, closeFestivalModal } from './ui.js';
 import { submitAdhesion, submitContact } from './forms.js';
 import { adminLogin, adminLogout, adminRefresh, deleteMember,
-         switchAdminTab, cmsAddArtiste, cmsAddGalerieItem, cmsUpdateHome, exportCSV,
-         renderArtistesGrid, deleteArtiste, deleteGalerieItem, loadArtistesAdmin,
-         loadArtistes, filterArtistes } from './admin.js';
+         switchAdminTab, cmsAddArtiste, cmsAddGalerieItem, cmsAddPartenaireLogo,
+         cmsUpdateHome, exportCSV, renderArtistesGrid, deleteArtiste, deleteGalerieItem,
+         deletePartenaireLogo, loadArtistesAdmin, loadPartenairesAdmin,
+         loadPartenaireLogos, loadArtistes, filterArtistes } from './admin.js';
 import { initPayPal }       from './paypal.js';
 import { filterGalerie, renderGalerie, renderGalerieHome, initGalerie } from './galerie.js';
 import { artistes, evenements } from '../config/data.js';
@@ -40,7 +41,7 @@ function renderArtistes(cat = 'tous') {
   });
 
   if (filtered.length === 0) {
-    grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:40px;">Aucun artiste dans cette catégorie pour le moment.</p>';
+    grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:40px;">Aucun collaborateur dans cette catégorie pour le moment.</p>';
     return;
   }
 
@@ -90,11 +91,15 @@ window.deleteMember      = deleteMember;
 window.switchAdminTab    = switchAdminTab;
 window.cmsAddArtiste     = cmsAddArtiste;
 window.cmsAddGalerieItem = cmsAddGalerieItem;
+window.cmsAddPartenaireLogo = cmsAddPartenaireLogo;
 window.cmsUpdateHome     = cmsUpdateHome;
 window.exportCSV         = exportCSV;
 window.deleteArtiste     = deleteArtiste;
 window.deleteGalerieItem= deleteGalerieItem;
+window.deletePartenaireLogo = deletePartenaireLogo;
 window.loadArtistesAdmin = loadArtistesAdmin;
+window.loadPartenairesAdmin = loadPartenairesAdmin;
+window.loadPartenaireLogos = loadPartenaireLogos;
 
 // ── INIT ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {

@@ -279,6 +279,78 @@ section { padding: 100px 0; }
 /* ── PARTENAIRES ── */
 .partenaires-page-hero { background: var(--black-soft); padding: 140px 0 80px; text-align: center; }
 .partenaires-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 40px; }
+.partenaires-marquee-section {
+  background: var(--black);
+  border-top: 1px solid rgba(200,169,107,0.12);
+  overflow: hidden;
+}
+.partenaires-marquee {
+  width: 100%;
+  overflow: hidden;
+  padding: 18px 0;
+  border-top: 1px solid rgba(200,169,107,0.12);
+  border-bottom: 1px solid rgba(200,169,107,0.12);
+  background: rgba(255,255,255,0.02);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.partenaires-logo-track {
+  display: flex;
+  width: max-content;
+  animation: partenaires-scroll 32s linear infinite;
+  will-change: transform;
+}
+.partenaires-marquee:hover .partenaires-logo-track { animation-play-state: paused; }
+.partenaires-logo-track.is-static {
+  width: 100%;
+  justify-content: center;
+  animation: none;
+}
+.partenaires-logo-row {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding-right: 28px;
+}
+.partenaire-logo-link { color: inherit; text-decoration: none; }
+.partenaire-logo-card {
+  height: 82px;
+  min-width: 180px;
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(200,169,107,0.16);
+}
+.partenaire-logo-card img {
+  max-width: 120px;
+  max-height: 50px;
+  object-fit: contain;
+}
+.partenaire-logo-card span {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--beige);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.partenaires-empty {
+  display: block;
+  width: 100%;
+  padding: 18px 24px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+@keyframes partenaires-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
 
 /* ── TÉMOIGNAGES ── */
 .temoignages-section { background: var(--black-soft); }

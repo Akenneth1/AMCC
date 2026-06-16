@@ -9,6 +9,7 @@ import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy
 // URL de l'API PHP artistes (même domaine OVH)
 const API_ARTISTES = './api/artistes.php';
 const API_GALERIE  = './api/galerie.php';
+const API_PARTENAIRES = './api/partenaires.php';
 
 const SHEETDB_URL = import.meta.env?.VITE_SHEETDB_URL
   || (location.hostname === 'localhost' || location.hostname === '127.0.0.1'
@@ -161,6 +162,7 @@ export function switchAdminTab(tabId, btn) {
   
   if (tabId === 'members')  adminRefresh();
   if (tabId === 'artistes') loadArtistesAdmin();
+  if (tabId === 'partenaires') loadPartenairesAdmin();
   if (tabId === 'galerie')  loadGalerieAdmin();
   if (tabId === 'home')     loadHomeCMS();
 }
@@ -233,6 +235,58 @@ export async function deleteArtiste(id) {
     });
     if (!res.ok) throw new Error('Erreur serveur');
     loadArtistesAdmin();
+  } catch (err) { alert('Erreur suppression : ' + err.message); }
+}
+
+export async function cmsAddPartenaireLogo() {
+  const nom = document.getElementById('cms-partner-name')?.value?.trim();
+  const url = document.getElementById('cms-partner-url')?.value?.trim() || '';
+  const file = document.getElementById('cms-partner-logo')?.files[0];
+  if (!nom || !file) return alert('Nom de l\'entreprise et logo requis.');
+
+  const btn = document.querySelector('#tab-partenaires .btn-primary');
+  const originalText = btn?.textContent;
+  if (btn) { btn.textContent = 'Upload...'; btn.disabled = true; }
+
+  try {
+    const form = new FormData();
+    form.append('nom', nom);
+    form.append('url', url);
+    form.append('logo', file);
+
+    const res = await fetch(API_PARTENAIRES, {
+      method: 'POST',
+      headers: { 'X-Admin-Token': ADMIN_HASH },
+      body: form
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || `Erreur serveur ${res.status}`);
+    }
+
+    alert('Logo partenaire ajouté !');
+    document.getElementById('cms-partner-name').value = '';
+    document.getElementById('cms-partner-url').value = '';
+    document.getElementById('cms-partner-logo').value = '';
+    loadPartenairesAdmin();
+  } catch (err) {
+    console.error(err);
+    alert('Erreur : ' + err.message);
+  } finally {
+    if (btn) { btn.textContent = originalText; btn.disabled = false; }
+  }
+}
+
+export async function deletePartenaireLogo(id) {
+  if (!confirm('Supprimer ce logo partenaire ?')) return;
+  try {
+    const res = await fetch(`${API_PARTENAIRES}?id=${encodeURIComponent(id)}`, {
+      method: 'DELETE',
+      headers: { 'X-Admin-Token': ADMIN_HASH }
+    });
+    if (!res.ok) throw new Error('Erreur serveur');
+    loadPartenairesAdmin();
   } catch (err) { alert('Erreur suppression : ' + err.message); }
 }
 
@@ -439,6 +493,91 @@ export async function loadGalerieAdmin() {
     </div>`;
 }
 
+function normalizePartenaireLogo(item) {
+  return {
+    id: item.id || '',
+    nom: item.nom || item.name || '',
+    url: item.url || item.lien || '',
+    logo: item.logo || item.src || item.img || '',
+    createdAt: item.createdAt || ''
+  };
+}
+
+function isHttpUrl(url) {
+  return /^https?:\/\//i.test(String(url || '').trim());
+}
+
+async function fetchAllPartenaireLogos() {
+  try {
+    const res = await fetch(API_PARTENAIRES);
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data) ? data.map(normalizePartenaireLogo) : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function loadPartenairesAdmin() {
+  const list = document.getElementById('cms-partenaires-list');
+  if (!list) return;
+  list.innerHTML = '<p style="text-align:center; color:var(--muted); padding:20px 0;">Chargement...</p>';
+  const all = await fetchAllPartenaireLogos();
+  if (all.length === 0) {
+    list.innerHTML = '<p style="text-align:center; color:var(--muted);">Aucun logo partenaire enregistré.</p>';
+    return;
+  }
+
+  list.innerHTML = `
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:16px; margin-top:16px;">
+      ${all.map(p => `
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(200,169,107,0.15); padding:16px;">
+          <div style="height:120px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.04); margin-bottom:10px;">
+            <img src="${escHtml(p.logo)}" alt="${escHtml(p.nom)}"
+                 style="max-width:86%; max-height:86%; object-fit:contain;"
+                 onerror="this.src='/logo.png'; this.style.opacity='0.4';">
+          </div>
+          <p style="font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--gold); margin:0 0 4px;">${escHtml(p.nom)}</p>
+          <p style="font-size:0.72rem; color:var(--muted); margin:0 0 10px; overflow-wrap:anywhere;">${escHtml(p.url)}</p>
+          ${p.id ? `<button onclick="deletePartenaireLogo('${escHtml(p.id)}')"
+            style="width:100%;background:none;border:1px solid #e55;color:#e55;padding:6px;cursor:pointer;font-size:0.72rem;">
+            Supprimer</button>` : ''}
+        </div>`).join('')}
+    </div>`;
+}
+
+function renderPartenaireLogoItem(partenaire) {
+  const logo = escHtml(partenaire.logo || '/logo.png');
+  const nom = escHtml(partenaire.nom || 'Partenaire AMC');
+  const content = `
+    <span class="partenaire-logo-card">
+      <img src="${logo}" alt="${nom}" loading="lazy" onerror="this.src='/logo.png'; this.style.opacity='0.45';">
+      <span>${nom}</span>
+    </span>`;
+
+  if (!isHttpUrl(partenaire.url)) return content;
+  return `<a class="partenaire-logo-link" href="${escHtml(partenaire.url)}" target="_blank" rel="noopener">${content}</a>`;
+}
+
+export async function loadPartenaireLogos() {
+  const track = document.getElementById('partenaires-logo-track');
+  if (!track) return;
+  track.innerHTML = '<div class="partenaires-logo-row"><span class="partenaires-empty">Chargement des partenaires...</span></div>';
+
+  const logos = await fetchAllPartenaireLogos();
+  if (!logos.length) {
+    track.classList.add('is-static');
+    track.innerHTML = '<div class="partenaires-logo-row"><span class="partenaires-empty">Les logos des entreprises partenaires seront bientôt ajoutés ici.</span></div>';
+    return;
+  }
+
+  const row = logos.map(renderPartenaireLogoItem).join('');
+  track.classList.toggle('is-static', logos.length < 2);
+  track.innerHTML = `
+    <div class="partenaires-logo-row">${row}</div>
+    ${logos.length > 1 ? `<div class="partenaires-logo-row" aria-hidden="true">${row}</div>` : ''}`;
+}
+
 async function fetchAllGalerieItems() {
   try {
     const res = await fetch(API_GALERIE);
@@ -453,7 +592,7 @@ export function renderArtistesGrid(list, showDelete = false) {
   const grid = document.getElementById('artistes-grid');
   if (!grid) return;
   if (!list || list.length === 0) {
-    grid.innerHTML = '<p style="text-align:center; color:var(--muted); padding:80px 0;">Les artistes seront bientôt présentés ici.</p>';
+    grid.innerHTML = '<p style="text-align:center; color:var(--muted); padding:80px 0;">Les collaborateurs seront bientôt présentés ici.</p>';
     return;
   }
   grid.innerHTML = list.map(a => `

@@ -1,7 +1,7 @@
 // ── NAV.JS — Navigation SPA · Menu mobile · Scroll · Thème ──
 
 import { observeReveal, renderEvents, renderExposants } from './ui.js';
-import { adminRefresh, loadArtistes }  from './admin.js';
+import { adminRefresh, loadArtistes, loadPartenaireLogos }  from './admin.js';
 import { renderGalerie } from './galerie.js';
 import { initPayPal }    from './paypal.js';
 
@@ -38,7 +38,10 @@ export function navigate(page) {
     observeReveal();
     try {
       if (page === 'admin')       adminRefresh();
-      if (page === 'partenaires') loadArtistes();
+      if (page === 'partenaires') {
+        loadArtistes();
+        loadPartenaireLogos();
+      }
       if (page === 'evenements')  renderEvents('tous');
       if (page === 'festival')    renderExposants();
       if (page === 'galerie')     renderGalerie();
