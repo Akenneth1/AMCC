@@ -17,8 +17,8 @@
   <link rel="icon" type="image/x-icon" href="./assets/favicon-CC0XJLKT.ico?v=1">
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon_32x32-BKo2pXNg.png">
   <link rel="apple-touch-icon" href="./assets/apple-touch-icon-CU62Hxil.png">
-  <script type="module" crossorigin src="./assets/main-gKb6CfnC.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/main-CeuhcBHd.css">
+  <script type="module" crossorigin src="./assets/main-DRecDiB6.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/main-DBoORm5d.css">
 </head>
 <body>
 
@@ -39,7 +39,7 @@
       <li><a onclick="navigate('evenements')"   id="nav-evenements">Événements</a></li>
       <li><a onclick="navigate('galerie')"      id="nav-galerie">Galerie</a></li>
       <li><a onclick="navigate('rejoindre')"    id="nav-rejoindre">Rejoindre AMC</a></li>
-      <li><a onclick="navigate('partenaires')"  id="nav-partenaires">Nos Talents</a></li>
+      <li><a onclick="navigate('partenaires')"  id="nav-partenaires">Collaborateurs</a></li>
       <li><a onclick="navigate('contact')"      id="nav-contact">Contact</a></li>
     </ul>
     <div style="display:flex;align-items:center;gap:12px;">
@@ -60,7 +60,7 @@
     <a onclick="navigate('evenements');closeMobile()">Événements</a>
     <a onclick="navigate('galerie');closeMobile()">Galerie</a>
     <a onclick="navigate('rejoindre');closeMobile()">Rejoindre AMC</a>
-    <a onclick="navigate('partenaires');closeMobile()">Nos Talents</a>
+    <a onclick="navigate('partenaires');closeMobile()">Collaborateurs</a>
     <a onclick="navigate('don');closeMobile()">Faire un don</a>
     <a onclick="navigate('contact');closeMobile()">Contact</a>
   </div>
@@ -222,12 +222,12 @@
 <section id="section-artistes-home">
   <div class="container">
     <div class="reveal" style="text-align:center;">
-      <p class="section-label" style="justify-content:center;">Nos talents</p>
-      <h2 class="section-title">Découvrez nos <em>talents</em></h2>
+      <p class="section-label" style="justify-content:center;">Collaborateurs</p>
+      <h2 class="section-title">Découvrez nos <em>collaborateurs</em></h2>
     </div>
     <div class="artistes-grid-home" id="artistes-grid-home"></div>
     <div style="text-align:center;margin-top:40px;">
-      <button class="btn-outline" onclick="navigate('partenaires')">Découvrir nos talents</button>
+      <button class="btn-outline" onclick="navigate('partenaires')">Découvrir nos collaborateurs</button>
     </div>
   </div>
 </section>
@@ -621,30 +621,6 @@
   </div>
 </section>
 
-<!-- Cotisations -->
-<section style="background: rgba(255,255,255,0.02); border-top:1px solid rgba(200,169,107,0.1); border-bottom:1px solid rgba(200,169,107,0.1);">
-  <div class="container">
-    <div class="reveal" style="text-align:center; margin-bottom:56px;">
-      <p class="section-label" style="justify-content:center;">Adhésion</p>
-      <h2 class="section-title">Devenir <em>Membre</em></h2>
-    </div>
-    <div style="max-width:440px; margin:0 auto;">
-      <div class="cotisation-card reveal featured" style="text-align:center;">
-        <h3 class="cotisation-title">Adhésion Annuelle</h3>
-        <div class="cotisation-price">30 €<span> / an</span></div>
-        <ul class="cotisation-features">
-          <li>Accès prioritaire aux événements</li>
-          <li>Tarifs réduits sur les ateliers</li>
-          <li>Droit de vote à l'AG</li>
-          <li>Newsletter exclusive membres</li>
-        </ul>
-        <button class="btn-primary" style="width:100%; margin-top:24px;" onclick="document.getElementById('adhesionForm').scrollIntoView({behavior:'smooth'})">Adhérer maintenant</button>
-        <p style="margin-top:16px; color:var(--beige); font-size:0.9rem; line-height:1.7;">Payer la cotisation en espèces est possible. Indiquez-le dans votre message, et nous vous contacterons pour convenir d’un rendez-vous.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="form-section">
   <div class="container">
     <div class="reveal" style="text-align:center; margin-bottom:48px;">
@@ -714,25 +690,57 @@
         <button class="btn-primary" type="submit">Envoyer ma demande</button>
       </div>
     </form>
+
+    <div class="adhesion-card-after-form">
+      <div class="reveal" style="text-align:center; margin-bottom:32px;">
+        <p class="section-label" style="justify-content:center;">Adhésion</p>
+        <h2 class="section-title">Devenir <em>Membre</em></h2>
+      </div>
+      <div style="max-width:440px; margin:0 auto;">
+        <div class="cotisation-card reveal featured" style="text-align:center;">
+          <h3 class="cotisation-title">Adhésion Annuelle</h3>
+          <div class="cotisation-price">30 €<span> / an</span></div>
+          <ul class="cotisation-features">
+            <li>Accès prioritaire aux événements</li>
+            <li>Tarifs réduits sur les ateliers</li>
+            <li>Droit de vote à l'AG</li>
+            <li>Newsletter exclusive membres</li>
+          </ul>
+          <button class="btn-primary" style="width:100%; margin-top:24px;" onclick="document.getElementById('adhesionForm').scrollIntoView({behavior:'smooth'})">Adhérer maintenant</button>
+          <p style="margin-top:16px; color:var(--beige); font-size:0.9rem; line-height:1.7;">Payer la cotisation en espèces est possible. Indiquez-le dans votre message, et nous vous contacterons pour convenir d’un rendez-vous.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 </div>
-  <div id="page-partenaires" class="page"><section class="artistes-hero">
+  <div id="page-partenaires" class="page"><section class="partenaires-page-hero">
   <div class="container">
-    <p class="section-label" style="justify-content:center;">Nos talents</p>
-    <h1 class="section-title">Nos <em>Talents</em></h1>
+    <p class="section-label" style="justify-content:center;">Collaborateurs</p>
+    <h1 class="section-title">Nos <em>Collaborateurs</em></h1>
     <div class="divider" style="margin:24px auto;"></div>
   </div>
 </section>
 
 <section style="padding-top:0;">
   <div class="container">
-    <div id="artistes-filter-bar" class="filter-bar" role="tablist" aria-label="Filtrer les talents"></div>
+    <div id="artistes-filter-bar" class="filter-bar" role="tablist" aria-label="Filtrer les collaborateurs"></div>
     <div class="artistes-grid" id="artistes-grid"></div>
   </div>
 </section>
 
+<section class="partenaires-marquee-section">
+  <div class="container">
+    <div class="reveal" style="text-align:center; margin-bottom:32px;">
+      <p class="section-label" style="justify-content:center;">Entreprises partenaires</p>
+      <h2 class="section-title">Ils nous <em>accompagnent</em></h2>
+    </div>
+  </div>
+  <div class="partenaires-marquee" aria-label="Logos des entreprises partenaires">
+    <div id="partenaires-logo-track" class="partenaires-logo-track"></div>
+  </div>
+</section>
 </div>
   <div id="page-don" class="page"><section class="don-hero">
   <div class="container">
@@ -1054,6 +1062,7 @@
         <button class="admin-cms-btn" onclick="switchAdminTab('home', this)">Accueil</button>
         <button class="admin-cms-btn" onclick="switchAdminTab('members', this)">Adhérents</button>
         <button class="admin-cms-btn" onclick="switchAdminTab('artistes', this)">Artistes</button>
+        <button class="admin-cms-btn" onclick="switchAdminTab('partenaires', this)">Partenaires</button>
         <button class="admin-cms-btn" onclick="switchAdminTab('galerie', this)">Galerie</button>
       </aside>
       <main class="admin-cms-content" style="flex:1;">
@@ -1108,6 +1117,18 @@
             <button class="btn-primary" onclick="cmsAddArtiste()">Ajouter l'artiste</button>
           </div>
           <div id="cms-artistes-list"></div>
+        </div>
+
+        <!-- Partenaires -->
+        <div id="tab-partenaires" class="admin-cms-tab">
+          <p class="section-label">Logos partenaires</p>
+          <div class="cms-form" style="margin:20px 0 40px; max-width:500px;">
+            <div class="form-group"><label>Nom de l'entreprise</label><input type="text" id="cms-partner-name" placeholder="Ex: Entreprise partenaire" /></div>
+            <div class="form-group"><label>Lien du site (facultatif)</label><input type="url" id="cms-partner-url" placeholder="https://..." /></div>
+            <div class="form-group"><label>Logo</label><input type="file" id="cms-partner-logo" accept="image/*" /></div>
+            <button class="btn-primary" onclick="cmsAddPartenaireLogo()">Ajouter le logo</button>
+          </div>
+          <div id="cms-partenaires-list"></div>
         </div>
 
         <!-- Galerie -->
@@ -1169,7 +1190,7 @@
           <h4>Rejoindre</h4>
           <a onclick="navigate('rejoindre')">Devenir membre</a>
           <a onclick="navigate('don')">Faire un don</a>
-          <a onclick="navigate('partenaires')">Nos Talents</a>
+          <a onclick="navigate('partenaires')">Collaborateurs</a>
           <a onclick="navigate('contact')">Contact</a>
         </div>
         <div class="footer-col">
