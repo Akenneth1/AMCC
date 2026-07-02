@@ -9,7 +9,7 @@ header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { exit(0); }
 
-$MAIL_TO = 'artmodeetculture@gmail.com';
+$MAIL_TO = 'contact@artmodeetculture.com';
 $body = file_get_contents('php://input');
 $data = json_decode($body, true);
 

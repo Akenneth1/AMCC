@@ -15,8 +15,8 @@ const SHEETDB_URL = import.meta.env?.VITE_SHEETDB_URL
   || (location.hostname === 'localhost' || location.hostname === '127.0.0.1'
       ? 'https://sheetdb.io/api/v1/yf325l4woltxi'
       : './api/sheetdb.php');
-const ADMIN_EMAIL = import.meta.env?.VITE_ADMIN_EMAIL  || 'artmodeculture@gmail.com';
-const ADMIN_HASH  = import.meta.env?.VITE_ADMIN_HASH   || '43151764bcdfc907da60f13d47fc166768829be22a13bacbc51c46256f61a78b';
+const ADMIN_EMAIL = import.meta.env?.VITE_ADMIN_EMAIL  || 'contact@artmodeetculture.com';
+const ADMIN_HASH  = import.meta.env?.VITE_ADMIN_HASH   || '6e2ae6d2dd300f8b08027a1ef2bfdfe324286ce12380abf13db7a183746d4d2d';
 
 function isFirebaseReady() {
   return import.meta.env?.VITE_FIREBASE_API_KEY &&

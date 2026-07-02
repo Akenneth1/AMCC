@@ -12,7 +12,7 @@ header('Access-Control-Allow-Headers: Content-Type');
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { exit(0); }
 
 $SHEETDB_BASE = 'https://sheetdb.io/api/v1/vz9tjb2ka6fnu';
-$MAIL_TO      = 'artmodeetculture@gmail.com';
+$MAIL_TO      = 'contact@artmodeetculture.com';
 
 $method = $_SERVER['REQUEST_METHOD'];
 
