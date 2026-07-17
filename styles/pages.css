@@ -27,7 +27,63 @@
 .valeur-icon svg { width: 28px; height: 28px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
 .valeur-name { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; margin-bottom: 10px; }
 .valeur-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.7; }
+.vision-block{
+  margin-top:32px;
+}
 
+.vision-block-title{
+  display:inline-block;
+  color:#141414;
+  background:var(--gold);
+  font-size:0.85rem;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  padding:6px 16px;
+  border-radius:6px;
+  margin-bottom:14px;
+}
+
+.vision-list{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.vision-list li{
+  position:relative;
+  padding-left:20px;
+  color:var(--beige);
+  font-size:0.98rem;
+  line-height:1.5;
+}
+
+.vision-list li::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:8px;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--gold);
+}
+
+.vision-narrative{
+  margin-top:32px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.vision-narrative p{
+  color:var(--beige);
+  font-size:1rem;
+  line-height:1.85;
+}
 /* ── TIMELINE ── */
 .timeline { position: relative; max-width: 800px; margin: 0 auto; }
 .timeline::before { content: ''; position: absolute; left: 120px; top: 0; bottom: 0; width: 1px; background: rgba(200,169,107,0.2); }
