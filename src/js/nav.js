@@ -17,6 +17,9 @@ function isAdminSessionValid() {
 }
 
 export function navigate(page) {
+  if (page === 'festival') {
+    page = 'accueil';
+  }
   if (page === 'admin' && !isAdminSessionValid()) {
     page = 'admin-login';
   }

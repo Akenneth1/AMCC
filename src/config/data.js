@@ -6,12 +6,11 @@
 export const evenements = [
   {
     id: 'festival-2026',
-    annee: '2026', tag: 'avenir', featured: true,
+    annee: '2026', tag: '2026', featured: true,
     titre: 'Festival Culturel du Continent Africain — 4ème Édition',
     date: '11 & 12 JUILLET 2026 · SALLE DES FÊTES DE FIVES, LILLE',
     desc: 'Sous le thème « Afrique créative : héritage, innovation et rayonnement », ce grand rendez-vous rassemble stylistes, designers, artisans et artistes pour célébrer la fusion des cultures.',
-    img: './galerie/Affiches/690205248_17964600612086373_2678800670389616223_n.jpg',
-    lien: 'festival'
+    img: './galerie/Affiches/690205248_17964600612086373_2678800670389616223_n.jpg'
   },
   {
     id: 'concert-mars-2026',

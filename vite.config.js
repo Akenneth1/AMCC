@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const PAGES = [
-  'accueil','association','festival','evenements','galerie',
+  'accueil','association',/* 'festival', */'evenements','galerie',
   'rejoindre','partenaires','don','paiement','contact',
   'mentions','confidentialite','admin-login','admin'
 ];
