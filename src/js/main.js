@@ -7,7 +7,7 @@ import { renderEvents, renderExposants,
          openLightbox, closeLightbox,
          initFestivalCountdown, openFestivalModal, closeFestivalModal } from './ui.js';
 import { submitAdhesion, submitContact } from './forms.js';
-import { adminLogin, adminLogout, adminRefresh, deleteMember,
+import { adminLogin, adminLogout, adminRefresh, deleteMember, validatePayment,
          switchAdminTab, cmsAddArtiste, cmsAddGalerieItem, cmsAddPartenaireLogo,
          cmsUpdateHome, exportCSV, renderArtistesGrid, deleteArtiste, deleteGalerieItem,
          deletePartenaireLogo, loadArtistesAdmin, loadPartenairesAdmin,
@@ -88,6 +88,7 @@ window.adminLogin        = adminLogin;
 window.adminLogout       = adminLogout;
 window.adminRefresh      = adminRefresh;
 window.deleteMember      = deleteMember;
+window.validatePayment   = validatePayment;
 window.switchAdminTab    = switchAdminTab;
 window.cmsAddArtiste     = cmsAddArtiste;
 window.cmsAddGalerieItem = cmsAddGalerieItem;

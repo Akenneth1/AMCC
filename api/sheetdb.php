@@ -6,7 +6,7 @@
  */
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS');
+header('Access-Control-Allow-Methods: GET, POST, DELETE, PATCH, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { exit(0); }
@@ -22,34 +22,60 @@ $url  = $SHEETDB_BASE . ($path ? '/' . ltrim($path, '/') : '');
 
 $body = file_get_contents('php://input');
 
-if ($body) {
+if ($method === 'POST' && $body) {
     $payload = json_decode($body, true);
     if (is_array($payload) && isset($payload['data']) && is_array($payload['data'])) {
         $data = $payload['data'];
-        $type = $data['type'] ?? (isset($data['profil']) ? 'adhesion' : 'message');
+        
+        if (isset($data[0]) && is_array($data[0])) {
+            $item = $data[0];
+            $type = isset($item['Type']) ? strtolower($item['Type']) : (isset($item['Profil']) ? 'adhesion' : 'message');
+            $nom = $item['Nom'] ?? '—';
+            $email = $item['Email'] ?? '—';
+            $message = $item['Message'] ?? '—';
+            $tel = $item['Téléphone'] ?? '—';
+            $ville = $item['Ville'] ?? '—';
+            $dateNaissance = $item['Date de naissance'] ?? '—';
+            $profil = $item['Profil'] ?? '—';
+            $paiement = $item['Paiement'] ?? '—';
+            $statut = $item['Statut'] ?? '—';
+        } else {
+            $item = $data;
+            $type = isset($item['type']) ? strtolower($item['type']) : (isset($item['profil']) ? 'adhesion' : 'message');
+            $nom = $item['nom'] ?? '—';
+            $email = $item['email'] ?? '—';
+            $message = $item['message'] ?? '—';
+            $tel = $item['tel'] ?? '—';
+            $ville = $item['ville'] ?? '—';
+            $dateNaissance = $item['dateNaissance'] ?? '—';
+            $profil = $item['profil'] ?? '—';
+            $paiement = $item['paiement'] ?? '—';
+            $statut = $item['statut'] ?? '—';
+        }
+
         $subject = 'Nouvelle soumission AMC';
         $messageLines = [];
 
         if ($type === 'contact') {
             $subject = 'Nouveau message de contact AMC';
             $messageLines[] = 'Type : Contact';
-            $messageLines[] = 'Nom : ' . ($data['nom'] ?? '—');
-            $messageLines[] = 'Email : ' . ($data['email'] ?? '—');
+            $messageLines[] = 'Nom : ' . $nom;
+            $messageLines[] = 'Email : ' . $email;
             $messageLines[] = 'Message :';
-            $messageLines[] = $data['message'] ?? '—';
+            $messageLines[] = $message;
         } else {
             $subject = 'Nouvelle demande d\'adhésion AMC';
             $messageLines[] = 'Type : Adhésion / Rejoindre AMC';
-            $messageLines[] = 'Nom : ' . ($data['nom'] ?? '—');
-            $messageLines[] = 'Email : ' . ($data['email'] ?? '—');
-            $messageLines[] = 'Téléphone : ' . ($data['tel'] ?? '—');
-            $messageLines[] = 'Ville : ' . ($data['ville'] ?? '—');
-            $messageLines[] = 'Date de naissance : ' . ($data['dateNaissance'] ?? '—');
-            $messageLines[] = 'Profil : ' . ($data['profil'] ?? '—');
-            $messageLines[] = 'Mode de paiement : ' . ($data['paiement'] ?? '—');
-            $messageLines[] = 'Statut : ' . ($data['statut'] ?? '—');
+            $messageLines[] = 'Nom : ' . $nom;
+            $messageLines[] = 'Email : ' . $email;
+            $messageLines[] = 'Téléphone : ' . $tel;
+            $messageLines[] = 'Ville : ' . $ville;
+            $messageLines[] = 'Date de naissance : ' . $dateNaissance;
+            $messageLines[] = 'Profil : ' . $profil;
+            $messageLines[] = 'Mode de paiement : ' . $paiement;
+            $messageLines[] = 'Statut : ' . $statut;
             $messageLines[] = 'Message / Motivations :';
-            $messageLines[] = $data['message'] ?? '—';
+            $messageLines[] = $message;
         }
 
         $messageLines[] = '';
@@ -57,7 +83,7 @@ if ($body) {
 
         $fromDomain = $_SERVER['SERVER_NAME'] ?: 'localhost';
         $fromEmail = 'no-reply@' . preg_replace('/[^a-z0-9.\-]/i', '', $fromDomain);
-        $senderEmail = filter_var($data['email'] ?? '', FILTER_VALIDATE_EMAIL);
+        $senderEmail = filter_var($email, FILTER_VALIDATE_EMAIL);
 
         $headers  = "From: Art Mode & Culture <{$fromEmail}>\r\n";
         if ($senderEmail) {
@@ -68,13 +94,19 @@ if ($body) {
         if (function_exists('mail')) {
             @mail($MAIL_TO, $subject, implode("\r\n", $messageLines), $headers);
         }
+
+        if ($type === 'contact') {
+            http_response_code(200);
+            echo json_encode(['success' => true]);
+            exit;
+        }
     }
 }
 
 if (!function_exists('curl_init')) {
     // Fallback sans cURL (file_get_contents)
     $opts = ['http' => ['method' => $method, 'header' => 'Content-Type: application/json']];
-    if (in_array($method, ['POST', 'DELETE'])) {
+    if (in_array($method, ['POST', 'DELETE', 'PATCH', 'PUT'])) {
         $opts['http']['content'] = $body;
     }
     $result = file_get_contents($url, false, stream_context_create($opts));
@@ -90,7 +122,7 @@ curl_setopt_array($ch, [
     CURLOPT_HTTPHEADER     => ['Content-Type: application/json', 'Accept: application/json'],
 ]);
 
-if (in_array($method, ['POST', 'DELETE'])) {
+if (in_array($method, ['POST', 'DELETE', 'PATCH', 'PUT'])) {
     if ($body) curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 }
 

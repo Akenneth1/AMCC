@@ -3,7 +3,7 @@
 import { db }         from '../config/firebase.js';
 import { artistes }   from '../config/data.js';
 import * as XLSX from 'xlsx';
-import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy
+import { collection, addDoc, getDocs, deleteDoc, updateDoc, doc, query, orderBy
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
 // URL de l'API PHP artistes (même domaine OVH)
@@ -106,8 +106,9 @@ export async function adminRefresh() {
         <td>${escHtml(a.profil)}</td>
         <td><span class="admin-badge ${a.statut === 'En attente de paiement' ? 'pending' : 'active'}">${escHtml(a.statut)}</span></td>
         <td style="text-align:right;">
+          ${a.statut === 'En attente de paiement' ? `<button onclick='validatePayment(${JSON.stringify(a.id)})' style="background:none;border:none;color:#4caf50;cursor:pointer;font-size:1.2rem;margin-right:8px;" title="Valider le paiement">✅</button>` : ''}
           <button onclick='deleteMember(${JSON.stringify(a.id)})'
-            style="background:none;border:none;color:#e55;cursor:pointer;font-size:1.2rem;">🗑️</button>
+            style="background:none;border:none;color:#e55;cursor:pointer;font-size:1.2rem;" title="Supprimer">🗑️</button>
         </td>
       </tr>`).join('');
   } catch (err) {
@@ -150,6 +151,47 @@ export async function deleteMember(id) {
   } catch (err) {
     console.error(err);
     alert(err.message || 'Erreur de suppression.');
+  }
+}
+
+export async function validatePayment(id) {
+  if (!id) return alert('Impossible de modifier : identifiant introuvable.');
+  if (!confirm('Marquer ce membre comme payé ?')) return;
+
+  const tryUpdate = async (path) => {
+    const url = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+      ? `${SHEETDB_URL}/${path}`
+      : `${SHEETDB_URL}?path=${path}`;
+    const res = await fetch(url, { 
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: { Statut: 'Payé', statut: 'Payé' } })
+    });
+    return res.ok ? res : null;
+  };
+
+  try {
+    if (isFirebaseReady()) {
+      await updateDoc(doc(db, 'adherents', id), { statut: 'Payé' });
+    } else {
+      const encodedId = encodeURIComponent(id);
+      const paths = [`email/${encodedId}`, `Email/${encodedId}`];
+      let response = null;
+
+      for (const path of paths) {
+        response = await tryUpdate(path);
+        if (response) break;
+      }
+
+      if (!response) {
+        throw new Error('Mise à jour impossible. Vérifiez le champ de tri du membre.');
+      }
+    }
+
+    adminRefresh();
+  } catch (err) {
+    console.error(err);
+    alert(err.message || 'Erreur de mise à jour.');
   }
 }
 
