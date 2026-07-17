@@ -308,20 +308,89 @@
 </section>
 <!-- La Vision du Président Fondateur -->
 <section>
-  <div class="container">
-    <div class="reveal vision-grid">
+  <style>
+    .vision-grid{
+      display:flex !important;
+      align-items:center;
+      gap:64px;
+      flex-wrap:wrap;
+    }
+    .vision-photo{
+      flex:0 0 340px;
+      text-align:center;
+    }
+    .vision-photo-frame{
+      position:relative;
+      border-radius:16px;
+      padding:6px;
+      background:linear-gradient(145deg, var(--gold,#c8a96b), transparent 60%);
+      box-shadow:0 20px 40px rgba(0,0,0,0.35);
+    }
+    .vision-photo-frame img{
+      width:100%;
+      display:block;
+      border-radius:12px;
+      object-fit:cover;
+      aspect-ratio:4/5;
+      background:rgba(255,255,255,0.05);
+    }
+    .vision-photo-caption{ margin-top:18px; color:var(--beige,#ddd); }
+    .vision-photo-caption strong{
+      display:block; color:var(--gold,#c8a96b);
+      font-size:1.05rem; letter-spacing:0.05em;
+    }
+    .vision-photo-caption span{
+      display:block; font-size:0.85rem; opacity:0.75; margin-top:4px;
+    }
+    .vision-text{ flex:1 1 420px; text-align:left !important; }
+    .vision-text p, .vision-text li{ text-align:left !important; }
+    .vision-quote{
+      margin:28px 0; padding:20px 24px;
+      border-left:3px solid var(--gold,#c8a96b);
+      background:rgba(255,255,255,0.04);
+      border-radius:0 10px 10px 0;
+      font-size:1.15rem; font-style:italic; color:var(--beige,#ddd);
+      text-align:left;
+    }
+    .vision-quote-highlight{
+      background:var(--gold,#c8a96b); color:#141414;
+      padding:2px 8px; border-radius:4px;
+      font-style:normal; font-weight:600;
+    }
+    .vision-block{ margin-top:32px; }
+    .vision-block-title{
+      display:inline-block; color:#141414; background:var(--gold,#c8a96b);
+      font-size:0.85rem; font-weight:700; letter-spacing:0.08em;
+      text-transform:uppercase; padding:6px 16px; border-radius:6px; margin-bottom:14px;
+    }
+    .vision-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+    .vision-list li{ position:relative; padding-left:20px; color:var(--beige,#ddd); font-size:0.98rem; line-height:1.5; }
+    .vision-list li::before{
+      content:""; position:absolute; left:0; top:8px;
+      width:8px; height:8px; border-radius:50%; background:var(--gold,#c8a96b);
+    }
+    .vision-narrative{ margin-top:32px; display:flex; flex-direction:column; gap:16px; }
+    .vision-narrative p{ color:var(--beige,#ddd); font-size:1rem; line-height:1.85; }
+    @media (max-width:860px){
+      .vision-grid{ flex-direction:column; text-align:center; }
+      .vision-text, .vision-text p, .vision-text li{ text-align:center !important; }
+    }
+  </style>
 
-      <!-- Colonne gauche : photo du président -->
+  <div class="container">
+    <div class="vision-grid">
+
       <div class="vision-photo">
         <div class="vision-photo-frame">
-         <img src="./galerie/MEBENGA-BRUNO.jpg" alt="Bruno Mebenga, Président Fondateur d'AMC" loading="lazy">
+          <img src="./galerie/MEBENGA-BRUNO.jpg" alt="Bruno Mebenga, Président Fondateur d'AMC" loading="lazy"
+               onerror="this.onerror=null;this.src='./galerie/MEBENGA BRUNO.jpg';">
+        </div>
         <p class="vision-photo-caption">
           <strong>Bruno Mebenga</strong>
           <span>Président Fondateur — AMC</span>
         </p>
       </div>
 
-      <!-- Colonne droite : texte -->
       <div class="vision-text">
         <p class="section-label">Ce que nous portons</p>
         <h2 class="section-title">La Vision du <em>Président Fondateur</em></h2>
@@ -335,7 +404,6 @@
           « L'engagement citoyen est dans <span class="vision-quote-highlight">mon ADN</span>. »
         </blockquote>
 
-        <!-- Bloc Bénévolat -->
         <div class="vision-block">
           <h3 class="vision-block-title">Bénévolat</h3>
           <ul class="vision-list">
@@ -347,7 +415,6 @@
           </ul>
         </div>
 
-        <!-- Bloc Vie associative -->
         <div class="vision-block">
           <h3 class="vision-block-title">Vie associative</h3>
           <ul class="vision-list">
@@ -357,7 +424,6 @@
           </ul>
         </div>
 
-        <!-- Bloc Ville de Lille -->
         <div class="vision-block">
           <h3 class="vision-block-title">Ville de Lille</h3>
           <ul class="vision-list">
@@ -366,23 +432,12 @@
           </ul>
         </div>
 
-        <!-- Texte narratif complet -->
         <div class="vision-narrative">
-          <p>
-            Vivre un <strong style="color:var(--gold);">événement planétaire</strong> comme les Jeux olympiques dans son propre pays est une occasion unique. J'ai apporté ma contribution pour la réussite de cette belle fête mondiale.
-          </p>
-          <p>
-            C'est une chance d'avoir été sélectionné comme bénévole pour les Jeux olympiques et paralympiques, et d'avoir assisté à la grande parade sur les Champs Élysées. Participer à un tel événement de l'intérieur n'est pas donné à tout le monde.
-          </p>
-          <p>
-            Cette fête populaire est l'un des rares événements où presque <strong style="color:var(--gold);">tout s'arrête pour laisser place au partage des passions</strong>. Les rencontres qui se vivent dans cette ambiance culturelle et sportive n'ont pas de prix.
-          </p>
-          <p>
-            En tant que <strong>Lillois</strong>, c'est une grande fierté d'avoir représenté ma ville. Et c'est une double fierté pour le <strong>Mvog Ntigui de Yaoundé</strong> (Cameroun) que je suis. Un clin d'œil également à feu mon père qui devait participer aux Jeux olympiques de 1972 en Allemagne, lui qui fut l'un des grands boxeurs camerounais de cette époque.
-          </p>
-          <p>
-            J'aime les liens humains, le partage, la tolérance et le vivre ensemble, autant de valeurs olympiques qui représentent le monde dont je rêve.
-          </p>
+          <p>Vivre un <strong style="color:var(--gold);">événement planétaire</strong> comme les Jeux olympiques dans son propre pays est une occasion unique. J'ai apporté ma contribution pour la réussite de cette belle fête mondiale.</p>
+          <p>C'est une chance d'avoir été sélectionné comme bénévole pour les Jeux olympiques et paralympiques, et d'avoir assisté à la grande parade sur les Champs Élysées. Participer à un tel événement de l'intérieur n'est pas donné à tout le monde.</p>
+          <p>Cette fête populaire est l'un des rares événements où presque <strong style="color:var(--gold);">tout s'arrête pour laisser place au partage des passions</strong>. Les rencontres qui se vivent dans cette ambiance culturelle et sportive n'ont pas de prix.</p>
+          <p>En tant que <strong>Lillois</strong>, c'est une grande fierté d'avoir représenté ma ville. Et c'est une double fierté pour le <strong>Mvog Ntigui de Yaoundé</strong> (Cameroun) que je suis. Un clin d'œil également à feu mon père qui devait participer aux Jeux olympiques de 1972 en Allemagne, lui qui fut l'un des grands boxeurs camerounais de cette époque.</p>
+          <p>J'aime les liens humains, le partage, la tolérance et le vivre ensemble, autant de valeurs olympiques qui représentent le monde dont je rêve.</p>
         </div>
 
         <blockquote class="vision-quote">
